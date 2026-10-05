@@ -1,0 +1,2368 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Калькулятор Кзи · CheckU</title>
+<meta name="description" content="Расчёт показателя защищённости Кзи по Методике ФСТЭК России от 11.11.2025 и требованиям приказа ФСТЭК России № 117. Отчёт во ФСТЭК России в формате Word.">
+<meta name="theme-color" content="#F2F2F2">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Калькулятор показателя защищённости Кзи · CheckU">
+<meta property="og:description" content="Расчёт Кзи по Методике ФСТЭК России от 11.11.2025, уровень защищённости, приоритеты устранения несоответствий и отчёт во ФСТЭК России.">
+<meta property="og:locale" content="ru_RU">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220.00 0.00 58.01 53.89%22%3E%3Cpath fill=%22%23EA9B28%22 fill-rule=%22evenodd%22 d=%22M30.10,53.89 26.77,53.83 23.60,52.66 19.44,50.12 5.60,42.67 2.94,40.85 1.36,39.22 0.34,37.05 0.02,34.22 0.00,6.88 0.60,4.38 2.60,1.73 4.77,0.54 6.94,0.00 55.46,0.05 55.75,0.38 55.67,0.72 54.10,1.81 42.27,8.67 10.94,8.62 9.77,8.80 9.33,9.22 9.19,33.05 9.39,34.22 11.41,35.72 16.27,38.15 18.60,39.67 28.12,44.72 29.27,44.97 30.27,44.79 32.77,43.15 39.27,39.79 43.60,37.12 46.62,35.72 48.27,34.55 48.96,33.22 48.87,23.55 48.27,23.09 47.44,23.20 31.27,31.77 29.10,32.43 28.27,32.41 26.13,31.72 16.29,26.55 16.11,25.88 16.09,17.88 16.30,16.72 16.77,16.55 18.27,17.15 20.60,18.67 21.66,19.05 28.10,22.72 29.44,22.90 56.94,8.32 57.44,8.19 57.91,8.55 58.01,35.72 57.77,37.05 56.79,38.72 55.09,40.72 52.10,42.79 36.60,51.12 33.94,52.78 30.10,53.89Z%22/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;display=swap">
+<style>
+/* ===== CheckU design tokens ===== */
+:root {
+  --bg: #F2F2F2;
+  --bg-start: #E9E9E9;
+  --card: #FFFFFF;
+  --text: #313131;
+  --text-2: #3C3C3C;
+  --text-3: #494949;
+  --muted: #666666;
+  --muted-2: #767676;
+  --muted-3: #A2A2A2;
+  --border: #E5E5E5;
+  --border-2: #D9D9D9;
+  --row: #F0F0F0;
+  --thead: #F5F5F5;
+  --row-alt: #FBFBFB;
+  --brand: #EA9B28;
+  --brand-ui: #F7942E;
+  --brand-light: #EFB45E;
+  --brand-soft: #FEF4E8;
+  --dark: #3F4145;
+  --dark-hover: #2E3033;
+  --red: #D61C1C;
+  --red-bg: #FCE8E8;
+  --red-bd: #F8C9C9;
+  --orange: #C2410C;
+  --orange-bg: #FFF1E6;
+  --orange-bd: #FDD2B1;
+  --green: #23874A;
+  --green-bg: #EAF6EE;
+  --green-bd: #BFE3CB;
+  --blue: #2858D3;
+  --blue-bg: #E6F4FF;
+  --blue-bd: #CDDBFD;
+  --gold: #C99A06;
+  --gold-bg: #FFFCF0;
+  --gold-bd: #FBE7A8;
+  --zone-red: #E5484D;
+  --zone-orange: #F2A23A;
+  --zone-green: #2FA45A;
+  --r-xl: 28px;
+  --r-lg: 20px;
+  --r-md: 12px;
+  --r-sm: 8px;
+  --r-xs: 6px;
+  --sidebar-w: 276px;
+  --topbar-h: 64px;
+  --font: 'Montserrat', 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  --shadow-pop: 0 6px 24px rgba(0, 0, 0, .10), 0 2px 6px rgba(0, 0, 0, .06);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text-2);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.45;
+  font-feature-settings: 'lnum' 1;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+a { color: inherit; }
+svg { display: block; }
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* custom scrollbar like CheckU */
+* { scrollbar-width: thin; scrollbar-color: #8B8B8B transparent; }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: #8B8B8B; border-radius: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+:focus-visible { outline: 2px solid var(--brand-ui); outline-offset: 2px; }
+
+/* ===== Shell ===== */
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+  grid-template-rows: var(--topbar-h) 1fr;
+  min-height: 100vh;
+}
+.app.is-collapsed { --sidebar-w: 96px; }
+
+.topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 24px 0 34px;
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--bg);
+}
+.topbar__logo { display: flex; align-items: center; text-decoration: none; }
+.topbar__logo .logo-full { height: 30px; width: auto; }
+.topbar__logo .logo-shield { height: 30px; width: auto; display: none; }
+.app.is-collapsed .topbar__logo .logo-full { display: none; }
+.app.is-collapsed .topbar__logo .logo-shield { display: block; }
+.topbar__right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.topbar .burger { display: none; }
+
+.kzi-chip {
+  display: inline-flex; align-items: center; gap: 10px;
+  height: 44px; padding: 0 8px 0 16px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r-md); text-decoration: none;
+  color: var(--text); white-space: nowrap;
+  transition: border-color .15s;
+}
+.kzi-chip:hover { border-color: var(--brand); }
+.kzi-chip__label { color: var(--muted); font-size: 14px; }
+.kzi-chip__value { font-weight: 700; font-size: 17px; }
+.kzi-chip__dot { width: 10px; height: 10px; border-radius: 50%; display: none; flex: none; }
+.kzi-chip__dot--red { background: var(--zone-red); }
+.kzi-chip__dot--orange { background: var(--zone-orange); }
+.kzi-chip__dot--green { background: var(--zone-green); }
+
+.icon-btn {
+  width: 44px; height: 44px; border-radius: var(--r-md);
+  display: inline-grid; place-items: center;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text-2);
+  transition: border-color .15s, color .15s;
+}
+.icon-btn:hover { border-color: var(--brand); color: var(--brand-ui); }
+.icon-btn svg { width: 20px; height: 20px; }
+
+.sidebar {
+  position: sticky; top: var(--topbar-h);
+  height: calc(100vh - var(--topbar-h));
+  display: flex; flex-direction: column;
+  padding: 2px 14px 18px 22px;
+}
+.nav { display: flex; flex-direction: column; gap: 4px; }
+.nav__sep { height: 1px; background: var(--border); margin: 12px 0 12px 12px; }
+.nav__item {
+  position: relative;
+  display: flex; align-items: center; gap: 14px;
+  height: 50px; padding: 0 14px;
+  border-radius: var(--r-md);
+  color: var(--muted-2); text-decoration: none;
+  font-size: 16px; font-weight: 500;
+  border: 0; background: none; text-align: left; width: 100%;
+  transition: background .15s, color .15s;
+}
+.nav__item svg { width: 20px; height: 20px; flex: none; color: #9A9A9A; transition: color .15s; }
+.nav__item:hover { color: var(--text-2); }
+.nav__item:hover svg { color: var(--text-2); }
+.nav__item.is-active { background: var(--card); color: var(--brand-ui); }
+.nav__item.is-active svg { color: var(--brand-ui); }
+.nav__item.is-active::before {
+  content: ''; position: absolute; left: -22px; top: 8px; bottom: 8px;
+  width: 4px; border-radius: 0 4px 4px 0; background: var(--brand-ui);
+}
+.nav__text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.app.is-collapsed .nav__text { display: none; }
+.app.is-collapsed .nav__item { justify-content: center; padding: 0; }
+.app.is-collapsed .nav__sep { margin-left: 0; }
+.sidebar__bottom { margin-top: auto; padding-left: 10px; }
+.collapse-btn {
+  width: 36px; height: 36px; border: 0; background: none; border-radius: var(--r-sm);
+  color: #9A9A9A; display: grid; place-items: center;
+}
+.collapse-btn:hover { color: var(--brand-ui); background: var(--card); }
+.collapse-btn svg { width: 20px; height: 20px; transition: transform .2s; }
+.app.is-collapsed .collapse-btn svg { transform: rotate(180deg); }
+.sidebar__brand { margin: 14px 0 0; font-size: 12px; color: var(--muted-3); line-height: 1.4; padding-right: 6px; }
+.app.is-collapsed .sidebar__brand { display: none; }
+
+.main { min-width: 0; padding: 4px 24px 32px 4px; }
+.page { display: flex; flex-direction: column; gap: 14px; }
+
+/* ===== Cards ===== */
+.card {
+  background: var(--card);
+  border-radius: var(--r-xl);
+  padding: 34px 40px 38px;
+  min-width: 0;
+}
+.card--tight { padding: 24px 28px; }
+.card__title { margin: 0 0 22px; font-size: 24px; line-height: 1.25; font-weight: 600; color: var(--text); }
+.card__title--sm { font-size: 19px; margin-bottom: 14px; }
+.card__head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+.card__head .card__title { margin: 0; }
+
+.breadcrumb { display: flex; gap: 10px; align-items: center; font-size: 15px; color: var(--muted-3); margin-bottom: 10px; }
+.breadcrumb a { color: var(--muted-3); text-decoration: none; }
+.breadcrumb a:hover { color: var(--brand-ui); }
+.page-title { margin: 0; font-size: 32px; line-height: 1.2; font-weight: 600; color: var(--text); letter-spacing: -.01em; }
+.page-sub { margin: 10px 0 0; color: var(--muted); font-size: 15px; max-width: 980px; }
+.section-title { margin: 40px 0 18px; font-size: 26px; line-height: 1.25; font-weight: 600; color: var(--text); }
+
+.grid { display: grid; gap: 14px; }
+.grid--kpi { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid--2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.grid--dash { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
+.grid--dash > .card { padding: 32px 30px 34px; }
+.table--compact th, .table--compact td { padding-left: 12px; padding-right: 12px; }
+.table--compact th { white-space: normal; }
+.table-wrap--scroll { max-height: 560px; overflow: auto; }
+.table-wrap--scroll thead th { position: sticky; top: 0; z-index: 1; }
+.show-sm { display: none; }
+.lbl-short { display: none; }
+.grid--report { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; }
+
+/* KPI card */
+.kpi {
+  position: relative; display: block;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: 26px 32px 24px;
+  text-decoration: none; color: inherit; min-height: 112px;
+}
+.kpi--active { border-color: var(--brand); }
+.kpi__label { color: var(--muted); font-size: 16px; }
+.kpi__value { margin-top: 4px; font-size: 30px; font-weight: 700; color: var(--text); line-height: 1.2; }
+.kpi__value small { font-size: 16px; font-weight: 500; color: var(--muted); }
+.kpi__note { margin-top: 6px; font-size: 13px; color: var(--muted-2); }
+.kpi__arrow {
+  position: absolute; top: 22px; right: 24px;
+  width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--border-2);
+  display: grid; place-items: center; color: var(--text-2); background: var(--card);
+  transition: border-color .15s, color .15s;
+}
+a.kpi:hover .kpi__arrow { border-color: var(--brand); color: var(--brand-ui); }
+.kpi__arrow svg { width: 18px; height: 18px; }
+
+/* Outline info card (task header) */
+.summary {
+  display: grid;
+  grid-template-columns: 1.3fr .9fr .8fr 1fr .9fr 1.3fr;
+  gap: 18px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 26px 32px;
+  margin-top: 28px;
+}
+.summary__label { color: var(--muted-2); font-size: 15px; margin-bottom: 6px; }
+.summary__value { color: var(--text-2); font-size: 16px; overflow-wrap: anywhere; }
+.summary__value--kzi { font-size: 26px; font-weight: 700; color: var(--text); line-height: 1.15; }
+.summary__value--muted { color: var(--muted-3); }
+.summary__value a { color: var(--brand-ui); text-decoration: none; }
+
+/* ===== Tags / pills ===== */
+.tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 28px; padding: 0 10px;
+  border-radius: var(--r-xs); border: 1px solid var(--border-2);
+  background: var(--card); color: var(--text-2);
+  font-size: 14px; font-weight: 500; white-space: nowrap; line-height: 1;
+}
+.tag--sm { height: 24px; font-size: 13px; padding: 0 8px; }
+.tag--red { background: var(--red-bg); border-color: var(--red-bd); color: var(--red); }
+.tag--orange { background: var(--orange-bg); border-color: var(--orange-bd); color: var(--orange); }
+.tag--green { background: var(--green-bg); border-color: var(--green-bd); color: var(--green); }
+.tag--blue { background: var(--blue-bg); border-color: var(--blue-bd); color: var(--blue); }
+.tag--gold { background: var(--gold-bg); border-color: var(--gold-bd); color: var(--gold); }
+.tag--gray { background: var(--thead); border-color: var(--border); color: var(--muted-2); }
+.tag--ok { background: var(--card); border-color: var(--border-2); color: var(--text-2); }
+
+.pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; height: 26px; padding: 0 9px;
+  border-radius: 999px; border: 1px solid var(--gold-bd);
+  background: var(--gold-bg); color: var(--gold);
+  font-size: 13px; font-weight: 600; white-space: nowrap;
+}
+.pill--done { border-color: var(--green-bd); background: var(--green-bg); color: var(--green); }
+.pill--na { border-color: var(--border); background: var(--thead); color: var(--muted-2); }
+
+.dash { color: var(--muted-3); }
+
+/* ===== Progress ===== */
+.progress { display: flex; align-items: center; gap: 12px; }
+.progress__track { flex: 1; height: 8px; border-radius: 99px; background: var(--row); overflow: hidden; min-width: 60px; }
+.progress__bar { height: 100%; border-radius: 99px; background: var(--brand); transition: width .3s ease; }
+.progress__text { font-size: 15px; color: var(--text-2); white-space: nowrap; }
+
+/* Кзи scale */
+.scale { margin-top: 18px; }
+.scale__track { position: relative; height: 10px; border-radius: 99px; overflow: visible; display: flex; }
+.scale__zone { height: 100%; }
+.scale__zone--red { width: 75%; background: var(--zone-red); border-radius: 99px 0 0 99px; opacity: .9; }
+.scale__zone--orange { width: calc(25% - 6px); background: var(--zone-orange); opacity: .9; }
+.scale__zone--green { width: 6px; background: var(--zone-green); border-radius: 0 99px 99px 0; }
+.scale__marker {
+  position: absolute; top: 50%; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--card); border: 3px solid var(--text); transform: translate(-50%, -50%);
+  transition: left .35s ease; box-shadow: 0 1px 4px rgba(0, 0, 0, .2);
+}
+.scale__ticks { position: relative; height: 18px; margin-top: 8px; font-size: 12px; color: var(--muted-2); }
+.scale__ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.scale__ticks span:first-child { transform: none; }
+.scale__ticks span:last-child { transform: translateX(-100%); }
+
+/* ===== Inputs ===== */
+.search {
+  display: flex; align-items: center; gap: 10px;
+  height: 46px; padding: 0 16px;
+  border: 1px solid var(--border-2); border-radius: var(--r-sm); background: var(--card);
+  transition: border-color .15s;
+}
+.search:focus-within { border-color: var(--brand-ui); }
+.search svg { width: 18px; height: 18px; color: var(--muted-3); flex: none; }
+.search input { border: 0; outline: 0; flex: 1; min-width: 0; height: 100%; background: none; font-size: 16px; }
+.search input::placeholder { color: #B5B5B5; }
+.search input::-webkit-search-cancel-button { cursor: pointer; }
+
+.filters { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 22px; align-items: center; }
+.select { position: relative; }
+.select__btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 40px; padding: 0 14px 0 18px;
+  border: 1px solid var(--border-2); border-radius: var(--r-sm); background: var(--card);
+  color: var(--muted-3); font-size: 15px;
+}
+.select__btn.is-set { color: var(--text-2); border-color: var(--brand-ui); }
+.select__btn svg { width: 16px; height: 16px; }
+.select__menu {
+  position: absolute; z-index: 20; top: calc(100% + 6px); left: 0; min-width: 220px;
+  background: var(--card); border-radius: var(--r-sm); box-shadow: var(--shadow-pop);
+  padding: 6px; margin: 0; list-style: none;
+}
+.select__menu button {
+  width: 100%; text-align: left; border: 0; background: none; padding: 9px 12px; border-radius: 6px;
+  font-size: 15px; display: flex; justify-content: space-between; gap: 12px;
+}
+.select__menu button:hover { background: var(--thead); }
+.select__menu button.is-on { color: var(--brand-ui); font-weight: 600; background: var(--brand-soft); }
+.filters__right { margin-left: auto; display: flex; gap: 10px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  height: 46px; padding: 0 22px;
+  border-radius: 10px; border: 1px solid transparent;
+  font-size: 16px; font-weight: 500; text-decoration: none; white-space: nowrap;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.btn svg { width: 18px; height: 18px; }
+.btn--dark { background: var(--dark); color: #fff; }
+.btn--dark:hover { background: var(--dark-hover); }
+.btn--outline { background: var(--card); border-color: var(--border-2); color: var(--text-2); }
+.btn--outline:hover { border-color: var(--brand-ui); color: var(--brand-ui); }
+.btn--ghost { background: none; border-color: transparent; color: var(--muted-2); height: 40px; padding: 0 12px; font-size: 15px; }
+.btn--ghost:hover { color: var(--brand-ui); }
+.btn--brand { background: var(--brand-ui); color: #fff; }
+.btn--brand:hover { background: #E8851F; }
+.btn--block { width: 100%; }
+.btn--sm { height: 40px; font-size: 15px; padding: 0 16px; }
+
+.form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 20px; }
+.field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.field--wide { grid-column: 1 / -1; }
+.field__label { font-size: 15px; color: var(--text-2); font-weight: 500; }
+.field__label i { color: var(--brand-ui); font-style: normal; }
+.field__hint { font-size: 13px; color: var(--muted-2); }
+.input, .textarea, .native-select {
+  width: 100%; height: 46px; padding: 0 16px;
+  border: 1px solid var(--border-2); border-radius: var(--r-sm); background: var(--card);
+  font-size: 16px; color: var(--text-2); outline: 0;
+  transition: border-color .15s, box-shadow .15s;
+}
+.native-select { appearance: none; padding-right: 44px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A2A2A2' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; background-size: 18px; }
+.textarea { height: auto; min-height: 96px; padding: 12px 16px; resize: vertical; line-height: 1.45; }
+.input::placeholder, .textarea::placeholder { color: #B5B5B5; }
+.input:focus, .textarea:focus, .native-select:focus { border-color: var(--brand-ui); box-shadow: 0 0 0 3px rgba(247, 148, 46, .12); }
+.input.is-error, .native-select.is-error, .textarea.is-error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(214, 28, 28, .08); }
+.form__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.form__note { margin-top: 14px; font-size: 13px; color: var(--muted-2); }
+
+/* Checkbox (AntD-like, brand colour) */
+.check { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; position: relative; }
+.check input { position: absolute; opacity: 0; width: 20px; height: 20px; margin: 0; cursor: pointer; }
+.check__box {
+  flex: none; width: 20px; height: 20px; margin-top: 1px;
+  border: 1px solid var(--border-2); border-radius: 5px; background: var(--card);
+  display: grid; place-items: center; transition: background .12s, border-color .12s;
+  position: relative;
+}
+.check__box svg { width: 14px; height: 14px; color: #fff; opacity: 0; transform: scale(.6); transition: opacity .12s, transform .12s; }
+.check:hover .check__box { border-color: var(--brand-ui); }
+.check input:checked + .check__box { background: var(--brand-ui); border-color: var(--brand-ui); }
+.check input:checked + .check__box svg { opacity: 1; transform: scale(1); }
+.check input:indeterminate + .check__box { border-color: var(--brand-ui); }
+.check input:indeterminate + .check__box::after { content: ''; position: absolute; left: 4px; top: 4px; width: 10px; height: 10px; border-radius: 2px; background: var(--brand-ui); }
+.check input:focus-visible + .check__box { outline: 2px solid var(--brand-ui); outline-offset: 2px; }
+.check input:disabled + .check__box { background: var(--thead); border-color: var(--border); }
+.check input:disabled ~ .check__text { color: var(--muted-3); }
+.check__text { font-size: 15px; color: var(--text-3); line-height: 1.45; }
+
+/* Switch */
+.switch { display: inline-flex; align-items: flex-start; gap: 12px; cursor: pointer; position: relative; }
+.switch input { position: absolute; opacity: 0; width: 40px; height: 22px; margin: 0; cursor: pointer; }
+.switch__track { flex: none; width: 40px; height: 22px; border-radius: 99px; background: #C9C9C9; position: relative; transition: background .15s; margin-top: 1px; }
+.switch__track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.2); transition: transform .15s; }
+.switch input:checked + .switch__track { background: var(--brand-ui); }
+.switch input:checked + .switch__track::after { transform: translateX(18px); }
+.switch input:focus-visible + .switch__track { outline: 2px solid var(--brand-ui); outline-offset: 2px; }
+.switch__text { font-size: 15px; color: var(--text-3); }
+.switch__text b { font-weight: 600; color: var(--text-2); }
+
+/* ===== Requirements table (AntD expandable table look) ===== */
+.req { border-radius: var(--r-md); }
+.req__head, .req-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) 150px 170px 130px;
+  align-items: center;
+}
+.req__head {
+  background: var(--thead); border-radius: var(--r-md) var(--r-md) 0 0;
+  color: var(--muted-2); font-size: 15px; min-height: 64px;
+}
+.req__head > div { padding: 0 16px; position: relative; }
+.req__head > div + div::before {
+  content: ''; position: absolute; left: 0; top: 50%; height: 22px; transform: translateY(-50%);
+  width: 1px; background: var(--border);
+}
+.req__head > div:first-child + div::before { display: none; }
+.req-row { min-height: 68px; border-bottom: 1px solid var(--row); background: var(--row-alt); }
+.req-row > div { padding: 12px 16px; min-width: 0; }
+.req-row__title { font-size: 16px; color: var(--text-2); font-weight: 500; }
+.req-row__num { font-size: 16px; color: var(--text-2); }
+.req-row__num small { color: var(--muted-2); font-size: 14px; }
+.req-group__body { padding-left: 56px; }
+.req-group:not(.is-open) .req-group__body { display: none; }
+
+.expander {
+  width: 20px; height: 20px; border-radius: 4px; border: 1px solid var(--border-2);
+  background: var(--card); position: relative; margin: 0 auto; padding: 0; flex: none;
+  transition: border-color .15s;
+}
+.expander::before, .expander::after {
+  content: ''; position: absolute; left: 50%; top: 50%; background: var(--text-2);
+  transform: translate(-50%, -50%); transition: transform .2s;
+}
+.expander::before { width: 10px; height: 1.5px; }
+.expander::after { width: 1.5px; height: 10px; }
+.expander[aria-expanded="true"]::after { transform: translate(-50%, -50%) rotate(90deg) scaleX(0); }
+.expander:hover { border-color: var(--brand-ui); }
+.expander:hover::before, .expander:hover::after { background: var(--brand-ui); }
+
+.ind__head, .ind-row {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 76px 92px 92px 172px;
+  align-items: center;
+}
+.ind__head { color: var(--muted-2); font-size: 14px; min-height: 52px; background: var(--card); border-bottom: 1px solid var(--row); }
+.ind__head > div { padding: 0 12px; }
+.ind-row { min-height: 62px; border-bottom: 1px solid var(--row); background: var(--card); cursor: pointer; transition: background .12s; }
+.ind-row:hover { background: #FCFCFC; }
+.ind-row > div { padding: 12px; min-width: 0; }
+.ind-row__title { font-size: 15px; color: var(--text-2); line-height: 1.45; }
+.ind-row__code { display: inline-block; min-width: 30px; color: var(--muted-2); font-weight: 600; }
+.ind-row__num { font-size: 15px; color: var(--text-3); }
+.ind-row__meta { display: none; }
+.ind.is-flash .ind-row { animation: flash 1.6s ease; }
+@keyframes flash { 0%, 40% { background: var(--brand-soft); } 100% { background: var(--card); } }
+
+.ind__body { display: none; border-bottom: 1px solid var(--row); background: var(--card); padding: 6px 12px 22px 56px; }
+.ind.is-open .ind__body { display: block; }
+.measures { display: flex; flex-direction: column; gap: 4px; }
+.measures__all { padding: 10px 12px 10px; border-bottom: 1px dashed var(--border); margin-bottom: 4px; }
+.measures__all .check__text { font-weight: 600; color: var(--text-2); }
+.measure { padding: 9px 12px; border-radius: var(--r-sm); transition: background .12s; }
+.measure:hover { background: var(--row-alt); }
+.ind__na { margin: 14px 12px 0; padding: 14px 16px; border-radius: var(--r-sm); background: var(--row-alt); border: 1px solid var(--row); }
+.ind.is-na .measures { opacity: .55; }
+.hint { margin: 14px 12px 0; border-radius: var(--r-sm); border: 1px solid var(--row); }
+.hint summary {
+  list-style: none; cursor: pointer; padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+  font-size: 14px; color: var(--muted-2); font-weight: 500;
+}
+.hint summary::-webkit-details-marker { display: none; }
+.hint summary svg { width: 18px; height: 18px; color: var(--muted-3); }
+.hint summary::after { content: ''; margin-left: auto; width: 8px; height: 8px; border-right: 1.5px solid var(--muted-3); border-bottom: 1.5px solid var(--muted-3); transform: rotate(45deg); transition: transform .2s; margin-top: -4px; }
+.hint[open] summary::after { transform: rotate(-135deg); margin-top: 4px; }
+.hint summary:hover { color: var(--brand-ui); }
+.hint__body { padding: 0 16px 14px 44px; font-size: 14px; color: var(--text-3); }
+.hint__body p { margin: 0 0 8px; }
+.hint__body p:last-child { margin: 0; }
+.hint__body b { color: var(--text-2); font-weight: 600; }
+
+.group-notes { padding: 16px 12px 22px; border-bottom: 1px solid var(--row); }
+.group-notes .textarea { min-height: 72px; font-size: 15px; }
+.group-notes__label { font-size: 14px; color: var(--muted-2); margin-bottom: 8px; display: block; }
+
+.empty { padding: 36px 16px; text-align: center; color: var(--muted-2); }
+
+/* ===== Data tables (dashboard) ===== */
+.table-wrap { overflow-x: auto; border-radius: var(--r-md); }
+.table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 15px; }
+.table th {
+  text-align: left; font-weight: 400; color: var(--muted-2); background: var(--thead);
+  padding: 15px 14px; font-size: 15px; white-space: nowrap; position: relative;
+}
+.table th:first-child { border-radius: var(--r-md) 0 0 var(--r-md); }
+.table th:last-child { border-radius: 0 var(--r-md) var(--r-md) 0; }
+.table th + th::before { content: ''; position: absolute; left: 0; top: 50%; height: 20px; transform: translateY(-50%); width: 1px; background: var(--border); }
+.table td { padding: 14px; border-bottom: 1px solid var(--row); color: var(--text-3); vertical-align: middle; }
+.table tr.is-link { cursor: pointer; }
+.table tr.is-link:hover td { background: #FCFCFC; }
+.table td.num, .table th.num { text-align: right; white-space: nowrap; }
+.table .t-title { color: var(--text-2); }
+.table .t-sub { display: block; font-size: 13px; color: var(--muted-2); margin-top: 2px; }
+.table .t-code { color: var(--muted-2); font-weight: 600; margin-right: 6px; }
+.gain { color: var(--green); font-weight: 600; white-space: nowrap; }
+
+/* Chart */
+.chart { width: 100%; height: auto; overflow: visible; }
+.chart text { font-family: var(--font); }
+.chart__legend { display: flex; flex-wrap: wrap; gap: 14px 24px; margin-top: 8px; font-size: 14px; color: var(--muted-2); }
+.chart__legend span { display: inline-flex; align-items: center; gap: 8px; }
+.chart__legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+/* Bars chart (CheckU "Распределение баллов") */
+.bars { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; margin-top: 30px; }
+.bars__y { position: relative; height: 240px; font-size: 12px; color: var(--muted-2); }
+.bars__y span { position: absolute; right: 6px; transform: translateY(50%); white-space: nowrap; }
+.bars__y span::after { content: ''; position: absolute; right: -10px; top: 50%; width: 6px; height: 1px; background: var(--border-2); }
+.bars__main { min-width: 0; }
+.bars__plot {
+  height: 240px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; align-items: end;
+  padding: 0 12px; border-bottom: 1px solid var(--border-2);
+  background-image: linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 100% 25%;
+}
+.bars__col { height: 100%; display: flex; align-items: flex-end; justify-content: center; }
+.bars__fill { position: relative; width: min(84px, 72%); min-height: 2px; background: var(--brand); border-radius: 8px 8px 0 0; transition: height .45s ease; }
+.bars__fill b { position: absolute; left: 50%; top: -26px; transform: translateX(-50%); font-size: 14px; font-weight: 600; color: var(--text); white-space: nowrap; }
+.bars__labels { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding: 12px 12px 0; text-align: center; font-size: 14px; color: var(--text-3); line-height: 1.35; }
+.bars__labels small { display: block; margin-top: 4px; color: var(--muted-2); font-size: 13px; }
+
+/* ===== Report ===== */
+.paper table { border-collapse: collapse; width: 100%; margin: 4px 0 10px; font-size: 12.5px; }
+.paper td, .paper th { border: 1px solid #555; padding: 3px 5px; vertical-align: top; text-align: left; line-height: 1.3; }
+.paper th { background: #F2F2F2; text-align: center; font-weight: 700; }
+.paper td.c, .paper th.c { text-align: center; }
+.paper td.g { background: #F7F7F7; font-weight: 700; }
+.paper td.t { font-weight: 700; }
+.paper h1 { font-size: 14px; text-align: center; margin: 22px 0 16px; font-weight: 700; }
+.paper h2 { font-size: 14px; text-align: center; margin: 14px 0 10px; font-weight: 700; }
+.paper h3 { text-align: left; margin: 16px 0 8px; }
+.paper p.r { text-align: right; margin: 0; }
+.paper p.ind { text-indent: 1.25cm; }
+.paper p.small { font-size: 12px; line-height: 1.25; margin: 0; text-align: left; }
+.paper ul, .paper ol { margin: 0 0 8px; padding-left: 22px; }
+.paper__sep { margin: 30px -10px 22px; padding-top: 12px; border-top: 1px dashed #CFCFCF; text-align: center; font-family: var(--font); font-size: 12px; color: var(--muted-3); }
+.form__note { margin: 14px 0 0; padding-left: 18px; font-size: 13px; color: var(--muted-2); }
+p.form__note { padding-left: 0; }
+.form__note li { margin-bottom: 4px; }
+.form__note a { color: var(--brand-ui); }
+.form--one { grid-template-columns: minmax(0, 1fr); }
+.form__actions--stack { flex-direction: column; margin-top: 22px; }
+.lead-card { border: 1px solid var(--border); border-radius: var(--r-lg); padding: 28px 28px 26px; }
+.notice a { color: inherit; font-weight: 600; }
+.paper-wrap { position: sticky; top: calc(var(--topbar-h) + 8px); }
+.paper {
+  background: #fff; border-radius: var(--r-md); border: 1px solid var(--border);
+  padding: 44px 46px 50px 56px; color: #111; font-family: 'Times New Roman', Times, serif;
+  font-size: 14px; line-height: 1.45; box-shadow: 0 1px 0 rgba(0,0,0,.02);
+  max-height: calc(100vh - var(--topbar-h) - 140px); overflow: auto;
+}
+.paper p { margin: 0 0 6px; text-align: justify; hyphens: auto; -webkit-hyphens: auto; }
+.paper .r { text-align: right; }
+.paper h3 { font-size: 14px; text-align: center; margin: 18px 0; font-weight: 700; }
+.paper .ph { background: #FFF3D6; color: #8A6100; border-radius: 3px; padding: 0 3px; }
+.paper .muted { color: #777; font-size: 12.5px; }
+.paper-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+.seg { display: inline-flex; padding: 4px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; gap: 4px; }
+.seg button { border: 0; background: none; height: 34px; padding: 0 14px; border-radius: 7px; font-size: 14px; color: var(--muted-2); }
+.seg button.is-on { background: var(--thead); color: var(--text-2); font-weight: 600; }
+
+.notice {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 16px; border-radius: var(--r-sm); font-size: 14px;
+  background: var(--brand-soft); border: 1px solid #F9DDB8; color: #7A4B07;
+}
+.notice svg { width: 18px; height: 18px; flex: none; margin-top: 1px; color: var(--brand-ui); }
+.notice--gray { background: var(--row-alt); border-color: var(--row); color: var(--text-3); }
+.notice--gray svg { color: var(--muted-3); }
+
+/* ===== Method / text ===== */
+.prose { font-size: 16px; color: var(--text-3); max-width: 920px; }
+.prose p { margin: 0 0 12px; }
+.prose h3 { margin: 28px 0 10px; font-size: 19px; color: var(--text); font-weight: 600; }
+.prose h3:first-child { margin-top: 0; }
+.prose ul, .prose ol { margin: 0 0 12px; padding-left: 22px; }
+.prose li { margin-bottom: 6px; }
+.prose a { color: var(--brand-ui); }
+.formula {
+  font-family: 'Cambria Math', 'Times New Roman', serif; font-size: 18px; color: var(--text);
+  background: var(--row-alt); border: 1px solid var(--row); border-radius: var(--r-sm);
+  padding: 16px 20px; overflow-x: auto; white-space: nowrap; margin: 6px 0 14px;
+}
+.levels { display: grid; gap: 10px; margin: 6px 0 4px; }
+.level-row { display: grid; grid-template-columns: 150px 270px minmax(0, 1fr); gap: 16px; align-items: center; padding: 14px 18px; border: 1px solid var(--row); border-radius: var(--r-sm); }
+.level-row__range { font-weight: 600; color: var(--text); white-space: nowrap; }
+.level-row__desc { color: var(--text-3); font-size: 15px; }
+
+/* ===== Service ===== */
+.service-hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+.gaps { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+.gap {
+  display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center;
+  padding: 12px 14px; border: 1px solid var(--row); border-radius: var(--r-sm); font-size: 15px;
+  text-decoration: none; color: inherit; transition: border-color .15s;
+}
+.gap:hover { border-color: var(--brand); }
+.gap__code { font-weight: 600; color: var(--muted-2); }
+.gap__title { color: var(--text-2); }
+.contacts { display: flex; flex-direction: column; gap: 12px; margin-top: 18px; }
+.contact { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-2); font-size: 16px; }
+.contact span.ic { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border-2); display: grid; place-items: center; color: var(--brand-ui); flex: none; }
+.contact span.ic svg { width: 18px; height: 18px; }
+.contact:hover { color: var(--brand-ui); }
+
+/* ===== Start screen (CheckU login card) ===== */
+.start {
+  min-height: 100vh; background: var(--bg-start);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px 16px 24px;
+}
+.frame {
+  position: relative; width: min(100%, 640px);
+  border-radius: 40px; background: var(--brand); padding: 34px;
+  overflow: hidden; isolation: isolate;
+}
+.frame__deco { position: absolute; z-index: -1; background: var(--brand-light); }
+.frame__deco--top { left: 0; top: 0; width: 100%; height: 160px; clip-path: polygon(0 0, 74% 0, 56% 100%, 0 100%); }
+.frame__deco--left { left: 0; top: 150px; width: 34px; height: 24%; }
+.frame__deco--bottom { left: 42%; bottom: 0; width: 34%; height: 34px; }
+.frame__deco--corner { left: 0; bottom: 0; width: 34px; height: 30%; }
+.frame__notch {
+  position: absolute; z-index: 2; left: 34px; top: 61%; width: 14px; height: 52px;
+  background: var(--brand); clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+.frame__tab { display: flex; height: 76px; }
+.frame__tab-l { flex: 0 0 56%; background: #fff; border-radius: 32px 0 0 0; display: flex; align-items: flex-end; padding: 0 0 4px 40px; }
+.frame__tab-s { flex: 0 0 64px; height: 100%; }
+.frame__tab-s svg { width: 100%; height: 100%; }
+.frame__tab-r { flex: 1 1 auto; margin-top: 44px; background: #fff; border-radius: 0 32px 0 0; }
+.frame__card { background: #fff; border-radius: 0 0 32px 32px; padding: 6px 40px 42px; position: relative; }
+.frame__logo { height: 34px; }
+.frame__logo svg { height: 34px; width: auto; }
+.frame h1 { margin: 22px 0 14px; font-size: 30px; line-height: 1.2; font-weight: 600; color: var(--text-2); }
+.frame p { margin: 0 0 14px; color: var(--text-3); font-size: 16px; }
+.facts { list-style: none; padding: 0; margin: 20px 0 28px; display: grid; gap: 10px; }
+.facts li { display: flex; gap: 12px; align-items: center; font-size: 15px; color: var(--text-2); }
+.facts li span { width: 28px; height: 28px; border-radius: 8px; background: var(--brand-soft); color: var(--brand-ui); display: grid; place-items: center; flex: none; }
+.facts li svg { width: 16px; height: 16px; }
+.start__link { display: block; text-align: center; margin-top: 16px; color: var(--muted-2); font-size: 15px; text-decoration: none; }
+.start__link:hover { color: var(--brand-ui); }
+.start__foot { margin-top: 36px; color: #3B3B3B; font-size: 16px; }
+
+/* ===== Modal & toast ===== */
+.modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; background: rgba(30, 30, 30, .35); }
+.modal__box { width: min(100%, 460px); background: var(--card); border-radius: var(--r-lg); padding: 28px 28px 24px; box-shadow: var(--shadow-pop); }
+.modal__title { margin: 0 0 10px; font-size: 20px; font-weight: 600; color: var(--text); }
+.modal__text { margin: 0 0 22px; color: var(--text-3); }
+.modal__actions { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.toast {
+  position: fixed; z-index: 120; left: 50%; bottom: 28px; transform: translateX(-50%);
+  background: var(--dark); color: #fff; padding: 12px 18px; border-radius: 10px; font-size: 15px;
+  box-shadow: var(--shadow-pop); max-width: calc(100vw - 32px);
+}
+.backdrop { display: none; }
+
+/* ===== Responsive ===== */
+@media (max-width: 1360px) {
+  .summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid--dash { grid-template-columns: minmax(0, 1fr); }
+  .grid--report { grid-template-columns: minmax(0, 1fr); }
+  .paper-wrap { position: static; }
+  .paper { max-height: none; }
+}
+@media (max-width: 1180px) {
+  .req__head, .req-row { grid-template-columns: 48px minmax(0, 1fr) 120px 150px 100px; }
+  .ind__head, .ind-row { grid-template-columns: 40px minmax(0, 1fr) 70px 84px 84px 160px; }
+  .grid--2, .grid--dash { grid-template-columns: minmax(0, 1fr); }
+  .service-hero { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 960px) {
+  :root { --topbar-h: 60px; }
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .app.is-collapsed { --sidebar-w: 276px; }
+  .topbar { padding: 0 12px; gap: 10px; }
+  .topbar .burger { display: inline-grid; }
+  .topbar__logo .logo-full { height: 26px; display: block !important; }
+  .topbar__logo .logo-shield { display: none !important; }
+  .sidebar {
+    position: fixed; z-index: 60; left: 0; top: 0; bottom: 0; height: 100vh; width: 288px;
+    background: var(--bg); transform: translateX(-100%); transition: transform .25s ease;
+    padding-top: 18px; box-shadow: var(--shadow-pop);
+  }
+  .app.is-menu .sidebar { transform: none; }
+  .app.is-menu .backdrop { display: block; position: fixed; inset: 0; z-index: 55; background: rgba(30,30,30,.3); }
+  .app.is-collapsed .nav__text { display: inline; }
+  .app.is-collapsed .nav__item { justify-content: flex-start; padding: 0 14px; }
+  .collapse-btn { display: none; }
+  .main { padding: 4px 12px 24px; }
+  .grid--kpi { grid-template-columns: minmax(0, 1fr); }
+  .kpi__label { font-size: 15px; }
+  .card { padding: 24px 20px 28px; border-radius: 22px; }
+  .page-title { font-size: 25px; }
+  .section-title { font-size: 21px; margin-top: 30px; }
+  .card__title { font-size: 20px; }
+  .summary { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 18px; gap: 16px; }
+  .summary__item--wide { grid-column: 1 / -1; }
+  .form { grid-template-columns: minmax(0, 1fr); }
+  .level-row { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+}
+@media (max-width: 760px) {
+  .kzi-chip__label { display: none; }
+  .kzi-chip { padding: 0 6px 0 12px; gap: 8px; height: 40px; }
+  .kzi-chip .tag { display: none; }
+  .kzi-chip__dot { display: block; }
+  .icon-btn { width: 40px; height: 40px; }
+  .req__head { display: none; }
+  .req-row { grid-template-columns: 40px minmax(0, 1fr) auto; border-radius: 0; }
+  .req-row > div { padding: 12px 8px; }
+  .req-row__k, .req-row__score { display: none; }
+  .req-group:first-of-type .req-row--group { border-top: 1px solid var(--row); }
+  .req-group__body { padding-left: 0; }
+  .ind__head { display: none; }
+  .ind-row { grid-template-columns: 36px minmax(0, 1fr); }
+  .ind-row > div { padding: 12px 6px; }
+  .ind-row__k, .ind-row__c, .ind-row__p, .ind-row__v { display: none; }
+  .ind-row__meta { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; margin-top: 8px; font-size: 13px; color: var(--muted-2); }
+  .ind__body { padding: 4px 6px 18px 12px; }
+  .measure { padding: 9px 6px; }
+  .hint, .ind__na { margin-left: 0; margin-right: 0; }
+  .hint__body { padding-left: 16px; }
+  .group-notes { padding: 14px 4px 20px; }
+  .filters__right { margin-left: 0; }
+  .frame { padding: 18px; border-radius: 30px; }
+  .frame__deco--left, .frame__deco--corner { width: 18px; }
+  .frame__deco--bottom { height: 18px; }
+  .frame__notch { left: 18px; }
+  .frame__card { padding: 4px 22px 30px; border-radius: 0 0 26px 26px; }
+  .frame__tab-l { border-radius: 26px 0 0 0; padding-left: 22px; flex-basis: 60%; }
+  .frame__tab-s { flex-basis: 48px; }
+  .frame__tab-r { margin-top: 36px; border-radius: 0 26px 0 0; }
+  .frame__tab { height: 62px; }
+  .frame__logo { height: 26px; }
+  .frame__logo svg { height: 26px; }
+  .bars { grid-template-columns: 38px minmax(0, 1fr); gap: 6px; }
+  .bars__plot, .bars__labels { gap: 8px; padding-left: 4px; padding-right: 4px; }
+  .bars__labels { font-size: 12px; }
+  .bars__labels small { font-size: 11.5px; }
+  .bars__fill b { font-size: 12px; }
+  .lead-card { padding: 22px 18px; }
+  .frame h1 { font-size: 24px; }
+  .paper { padding: 26px 22px 30px; }
+  .table th, .table td { padding: 12px 10px; }
+  .hide-sm { display: none; }
+  .show-sm { display: block; margin-top: 8px; }
+  .lbl-full { display: none; }
+  .lbl-short { display: inline; }
+  .table-wrap--scroll { max-height: none; }
+}
+@media (max-width: 420px) {
+  .topbar__logo .logo-full { height: 22px; }
+  .summary { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media print {
+  .topbar, .sidebar, .filters, .toolbar { display: none !important; }
+  .app { display: block; }
+  body { background: #fff; }
+}
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<noscript><div style="padding:24px;font-family:Arial,sans-serif">Для работы калькулятора включите JavaScript в браузере.</div></noscript>
+<script>
+/* Данные Методики оценки показателя состояния технической защиты информации
+   (утв. ФСТЭК России 11.11.2025). Веса хранятся в сотых долях: R = 10 означает 0,10.
+   Вклад показателя = R * k в десятитысячных долях, сумма всех вкладов = 10000 (Кзи = 1). */
+
+const METHOD = {
+  docTitle: 'Методика оценки показателя состояния технической защиты информации в информационных системах и обеспечения безопасности значимых объектов критической информационной инфраструктуры Российской Федерации',
+  docDate: '11.11.2025',
+  orderRef: 'приказ ФСТЭК России от 11.04.2025 № 117',
+  groups: [
+    {
+      id: 1,
+      title: 'Организация и управление',
+      R: 10,
+      indicators: [
+        {
+          id: '1.1', code: 'k11', k: 30,
+          title: 'На заместителя руководителя возложены полномочия за обеспечение ИБ',
+          items: [
+            'Издан приказ о назначении заместителя руководителя ответственным за ИБ',
+            'В должностной инструкции закреплены трудовые функции по ИБ'
+          ],
+          official: 'На заместителя руководителя органа (организации) возложены полномочия ответственного лица за обеспечение информационной безопасности органа (организации) и определены его обязанности.',
+          evidence: 'Приказ (распоряжение) о назначении, должностной регламент с обязанностями по ИБ.'
+        },
+        {
+          id: '1.2', code: 'k12', k: 40,
+          title: 'Определены задачи подразделения/обязанности работника за обеспечение ИБ',
+          items: [
+            'Создано подразделение ИБ или назначен работник',
+            'Утверждено положение о подразделении / должностная инструкция',
+            'Определены полномочия и ответственность'
+          ],
+          official: 'Определены функции (обязанности) структурного подразделения (или отдельных работников), ответственного за обеспечение информационной безопасности органа (организации).',
+          evidence: 'Положение о структурном подразделении по обеспечению ИБ или должностные инструкции работников.'
+        },
+        {
+          id: '1.3', code: 'k13', k: 30,
+          title: 'В договоре с подрядчиками установлены требования о реализации мер по защите от угроз',
+          items: [
+            'Определены подрядчики с привилегированным доступом к ИС',
+            'В договорах есть требования по защите от угроз при подключении через инфраструктуру подрядчика'
+          ],
+          official: 'К подрядным организациям, имеющим доступ к информационным системам с привилегированными правами, в договорах установлены требования о реализации мер по защите от угроз через информационную инфраструктуру подрядчика.',
+          evidence: 'Договоры (контракты) с требованиями о мерах защиты в инфраструктуре подрядчика.',
+          na: 'Подрядные организации с привилегированным доступом к ИС не привлекаются'
+        }
+      ]
+    },
+    {
+      id: 2,
+      title: 'Защита пользователей',
+      R: 25,
+      indicators: [
+        {
+          id: '2.1', code: 'k21', k: 30,
+          title: 'Требования парольной политики выполнены',
+          items: [
+            'Утверждена парольная политика',
+            'Минимальная длина пароля: 12 символов',
+            'Требуется сложность (буквы верхнего и нижнего регистра, специальные символы)',
+            'Максимальное количество неуспешных попыток входа: от 3 до 10 попыток',
+            'Установлен срок действия пароля (не более 120 дней)',
+            'Обеспечен контроль соблюдения политики'
+          ],
+          official: 'Отсутствуют учётные записи с паролем, сложность которого не соответствует установленным требованиям к парольной политике (не менее 12 символов, буквы верхнего и нижнего регистра, специальные символы, без персонифицированной информации). При отсутствии технической возможности обеспечить требуемую сложность паролей реализованы компенсирующие меры.',
+          evidence: 'Документ с требованиями к паролям, снимки экранов настроек, отчёт средства анализа защищённости.'
+        },
+        {
+          id: '2.2', code: 'k22', k: 30,
+          title: 'Реализована MFA привилегированных пользователей (не менее 50%)',
+          items: [
+            'Определён перечень привилегированных УЗ',
+            'Внедрено решение MFA',
+            'MFA включена для всех администраторов',
+            'Охват MFA: не менее 50% привилегированных УЗ'
+          ],
+          official: 'Реализована многофакторная аутентификация привилегированных пользователей: при аутентификации не менее 50% администраторов, разработчиков или иных привилегированных пользователей используется второй фактор.',
+          evidence: 'Сведения о средстве многофакторной аутентификации и о количестве пользователей, для которых оно применяется.',
+          na: 'Техническая возможность многофакторной аутентификации отсутствует'
+        },
+        {
+          id: '2.3', code: 'k23', k: 20,
+          title: 'Отсутствуют учётные записи разработчиков и сервисные УЗ с паролями по умолчанию',
+          items: [
+            'Проведена инвентаризация сервисных УЗ и УЗ разработчиков',
+            'Изменены все пароли, установленные по умолчанию',
+            'Настроен сброс пароля после первой аутентификации'
+          ],
+          official: 'Отсутствуют учётные записи разработчиков и сервисные учётные записи с паролями, установленными ими по умолчанию.',
+          evidence: 'Снимки экранов политики сброса паролей, отчёт средства анализа защищённости.'
+        },
+        {
+          id: '2.4', code: 'k24', k: 20,
+          title: 'Отсутствуют активные учётные записи уволенных работников',
+          items: [
+            'Есть регламент блокировки УЗ при увольнении',
+            'УЗ блокируются в день увольнения'
+          ],
+          official: 'Отсутствуют активные учётные записи работников органа (организации) и работников, привлекаемых на договорной основе, с которыми прекращены трудовые или иные отношения.',
+          evidence: 'Организационно-распорядительный документ с требованием удалять (отключать) учётные записи.'
+        }
+      ]
+    },
+    {
+      id: 3,
+      title: 'Защита информационных систем',
+      R: 35,
+      indicators: [
+        {
+          id: '3.1', code: 'k31', k: 20,
+          title: 'Межсетевой экран L3/L4 на периметре (контроль 100% интерфейсов, доступных из Интернета)',
+          items: [
+            'Установлен межсетевой экран на границе сети',
+            'Настроена фильтрация на уровне L3 (IP-адреса)',
+            'Настроена фильтрация на уровне L4 (порты TCP/UDP)',
+            'Определён перечень интерфейсов (IP-адреса, доменные имена, порты), доступных из сети «Интернет»'
+          ],
+          official: 'На сетевом периметре информационных систем установлены межсетевые экраны уровня L3/L4: доступ к 100% интерфейсов, доступных из сети «Интернет», контролируется межсетевыми экранами уровня L3/L4.',
+          evidence: 'Перечень интерфейсов, доступных из сети «Интернет», сведения о средствах межсетевого экранирования и их настройках.',
+          na: 'Отсутствуют устройства, взаимодействующие с сетью «Интернет»'
+        },
+        {
+          id: '3.2', code: 'k32', k: 25,
+          title: 'Отсутствуют критические уязвимости на периметре',
+          items: [
+            'Проводится регулярное сканирование устройств на границе сети',
+            'Критические уязвимости устраняются в течение 30 дней'
+          ],
+          official: 'На устройствах и интерфейсах, доступных из сети «Интернет», отсутствуют уязвимости критического уровня опасности, обновления (компенсирующие меры) для которых опубликованы в банке данных угроз ФСТЭК России, на сайтах разработчиков или в иных открытых источниках более 30 дней назад, или в отношении таких уязвимостей реализованы компенсирующие меры.',
+          evidence: 'Сведения об устройствах, отчёт сканирования на уязвимости не старше 30 дней, описание компенсирующих мер.'
+        },
+        {
+          id: '3.3', code: 'k33', k: 15,
+          title: 'На устройствах и серверах устраняются критические уязвимости в течение 90 дней (не менее 90% устройств)',
+          items: [
+            'Проводится сканирование уязвимостей внутренней инфраструктуры',
+            'Критические уязвимости устраняются в течение 90 дней',
+            'Охват сканирования: не менее 90% устройств',
+            'Проводится регулярная инвентаризация пользовательских устройств'
+          ],
+          official: 'На пользовательских устройствах и серверах (не менее 90%) отсутствуют уязвимости критического уровня, обновления (компенсирующие меры) для которых опубликованы более 90 дней назад, или в отношении таких уязвимостей реализованы компенсирующие меры.',
+          evidence: 'Данные о количестве устройств, отчёт сканирования на критические уязвимости, описание компенсирующих мер.'
+        },
+        {
+          id: '3.4', code: 'k34', k: 15,
+          title: 'Обеспечена проверка вложений в электронных письмах на наличие ВПО (не менее 80% устройств)',
+          items: [
+            'Используется антивирус на почтовом сервере',
+            'Проверяются почтовые вложения',
+            'Блокируются опасные типы вложений (.exe, .js и др.)'
+          ],
+          official: 'Обеспечена проверка вложений в электронных письмах на наличие вредоносного программного обеспечения: вложения проверяются не менее чем на 80% пользовательских устройств.',
+          evidence: 'Количество рабочих мест с проверкой вложений, сведения о средствах антивирусной защиты, отчёт средства защиты.',
+          na: 'Электронная почта не используется'
+        },
+        {
+          id: '3.5', code: 'k35', k: 15,
+          title: 'Антивирус с центром управления (не менее 80% устройств и серверов)',
+          items: [
+            'Используется корпоративный сертифицированный антивирус',
+            'Реализовано централизованное управление антивирусом (консоль администратора)',
+            'Охват антивирусом: не менее 80% устройств',
+            'Антивирусные базы обновляются автоматически'
+          ],
+          official: 'Обеспечено централизованное управление средствами антивирусной защиты: не менее 80% пользовательских устройств и серверов контролируются средствами антивирусной защиты с централизованным управлением. Обновления баз признаков вредоносного программного обеспечения контролируются и устанавливаются не реже 1 раза в месяц.',
+          evidence: 'Общее количество рабочих мест, снимок консоли управления, отчёт с датами обновлений и проверок.'
+        },
+        {
+          id: '3.6', code: 'k36', k: 10,
+          title: 'Реализована защита от DDoS на уровне L3/L4 (заключён договор с провайдером)',
+          items: [
+            'Определены публичные сервисы, требующие защиты',
+            'Реализована защита от DDoS путём заключения договора с провайдером или применения собственных средств защиты',
+            'Защита работает на уровне L3/L4'
+          ],
+          official: 'Реализована очистка входящего из сети «Интернет» трафика от компьютерных атак, направленных на отказ в обслуживании, на уровне L3/L4 (заключён договор с провайдером). При самостоятельной блокировке атак подтверждаются применяемые методы и средства защиты.',
+          evidence: 'Договор с оператором связи или сведения о собственных методах и средствах защиты от атак на отказ в обслуживании.',
+          na: 'Отсутствуют сервисы, доступные из сети «Интернет»'
+        }
+      ]
+    },
+    {
+      id: 4,
+      title: 'Мониторинг ИБ и реагирование',
+      fullTitle: 'Мониторинг информационной безопасности и реагирование',
+      R: 30,
+      indicators: [
+        {
+          id: '4.1', code: 'k41', k: 40,
+          title: 'Реализован централизованный сбор событий безопасности и оповещение',
+          items: [
+            'Внедрена SIEM-система',
+            'Настроен сбор событий',
+            'Настроено оповещение о неудачных попытках входа для привилегированных УЗ'
+          ],
+          official: 'Реализован централизованный сбор событий безопасности и оповещение о неудачных попытках входа для привилегированных учётных записей.',
+          evidence: 'Количество привилегированных учётных записей, снимок настроек оповещений, отчёт о зарегистрированных событиях.'
+        },
+        {
+          id: '4.2', code: 'k42', k: 35,
+          title: 'Реализован централизованный сбор и анализ событий безопасности на всех устройствах, взаимодействующих с сетью «Интернет»',
+          items: [
+            'Определён перечень устройств, взаимодействующих с сетью «Интернет»',
+            'Определён перечень событий информационной безопасности',
+            'Настроен сбор событий со всех таких устройств в SIEM-систему'
+          ],
+          official: 'Реализован централизованный сбор и анализ событий безопасности на всех устройствах, взаимодействующих с сетью «Интернет».',
+          evidence: 'Перечень регистрируемых событий и количество устройств, снимок настроек сбора, отчёт о событиях.'
+        },
+        {
+          id: '4.3', code: 'k43', k: 25,
+          title: 'Утверждён порядок реагирования на компьютерные инциденты',
+          items: [
+            'Утверждён регламент реагирования на инциденты',
+            'Определены роли и ответственные',
+            'Описаны типовые сценарии реагирования',
+            'Проводятся учения по реагированию на компьютерные инциденты'
+          ],
+          official: 'Утверждён документ, определяющий порядок реагирования на компьютерные инциденты.',
+          evidence: 'Организационно-распорядительный документ о порядке реагирования на компьютерные инциденты.'
+        }
+      ]
+    }
+  ],
+  levels: [
+    { key: 'base', name: 'Минимальный базовый', color: 'зелёный', range: 'Кзи = 1', desc: 'Минимальный базовый уровень защиты от актуальных угроз обеспечен' },
+    { key: 'low', name: 'Низкий', color: 'оранжевый', range: '0,75 < Кзи < 1', desc: 'Минимальный уровень защиты не обеспечен, есть предпосылки к реализации угроз' },
+    { key: 'crit', name: 'Критический', color: 'красный', range: 'Кзи ≤ 0,75', desc: 'Минимальный уровень защиты не обеспечен, есть реальная возможность реализации угроз' }
+  ]
+};
+
+/* Территориальные органы ФСТЭК России. ФИО руководителей в дательном падеже по данным ЕГРЮЛ,
+   перед отправкой письма их нужно сверить на fstec.ru. */
+const FSTEC_BODIES = [
+  { id: 'cfo', short: 'ЦФО', name: 'Управление ФСТЭК России по Центральному федеральному округу', city: 'Москва', head: 'О.В. Райкову' },
+  { id: 'szfo', short: 'СЗФО', name: 'Управление ФСТЭК России по Северо-Западному федеральному округу', city: 'Санкт-Петербург', head: 'Д.Н. Шакину' },
+  { id: 'yufo', short: 'ЮФО и СКФО', name: 'Управление ФСТЭК России по Южному и Северо-Кавказскому федеральным округам', city: 'Ростов-на-Дону', head: 'Е.В. Поклонову' },
+  { id: 'pfo', short: 'ПФО', name: 'Управление ФСТЭК России по Приволжскому федеральному округу', city: 'Нижний Новгород', head: 'П.В. Максякову' },
+  { id: 'ufo', short: 'УФО', name: 'Управление ФСТЭК России по Уральскому федеральному округу', city: 'Екатеринбург', head: 'О.П. Чувардину' },
+  { id: 'sfo', short: 'СФО', name: 'Управление ФСТЭК России по Сибирскому федеральному округу', city: 'Новосибирск', head: 'В.Н. Булгакову' },
+  { id: 'dfo', short: 'ДФО', name: 'Управление ФСТЭК России по Дальневосточному федеральному округу', city: 'Хабаровск', head: '' }
+];
+
+const CONFIG = {
+  brand: 'УЦСБ',
+  brandFull: 'Уральский центр систем безопасности',
+  contactEmail: 'info@ussc.ru',
+  contactPhone: '+7 (343) 379-98-34',
+  contactPhoneHref: '+73433799834',
+  site: 'https://sec.ussc.ru/',
+  methodUrl: 'https://fstec.ru/tekhnicheskaya-zashchita-informatsii/dokumenty-tzi',
+  /* Адрес приёма заявок (например, вебхук CRM). Пока пусто: заявка уходит письмом через почтовый клиент. */
+  leadEndpoint: '',
+  storageKey: 'checku-kzi-v1'
+};
+
+</script>
+<script>
+/* Формирование документов Word (HTML-формат .doc, как в исходном калькуляторе) */
+const Report = (function () {
+  'use strict';
+
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  const DOC_CSS = [
+    '@page WordSection1 { size: 595.3pt 841.9pt; margin: 2cm 1.5cm 2cm 3cm; mso-page-orientation: portrait; }',
+    'div.WordSection1 { page: WordSection1; }',
+    "body { font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.5; }",
+    "p, h1, h2, h3, li, td, th { font-family: 'Times New Roman', serif; }",
+    'p { margin: 0 0 6pt 0; text-align: justify; }',
+    'p.r { text-align: right; margin: 0; }',
+    'p.ind { text-indent: 1.25cm; }',
+    'p.small { font-size: 10pt; line-height: 1.2; margin: 0; text-align: left; }',
+    'h1 { font-size: 12pt; font-weight: bold; text-align: center; margin: 20pt 0 14pt; }',
+    'h2 { font-size: 12pt; font-weight: bold; text-align: center; margin: 14pt 0 8pt; }',
+    'h3 { font-size: 12pt; font-weight: bold; margin: 12pt 0 6pt; }',
+    'table { border-collapse: collapse; width: 100%; margin: 4pt 0 8pt; }',
+    'td, th { border: 1px solid #000000; padding: 2pt 4pt; font-size: 10.5pt; line-height: 1.2; vertical-align: top; text-align: left; }',
+    'th { font-weight: bold; text-align: center; background: #F2F2F2; }',
+    'td.c, th.c { text-align: center; }',
+    'td.g { background: #F7F7F7; font-weight: bold; }',
+    'td.t { font-weight: bold; }',
+    '.pb { page-break-before: always; }',
+    'ul, ol { margin-top: 0; margin-bottom: 6pt; }',
+    'li { margin-bottom: 3pt; }'
+  ].join('\n');
+
+  const FONT = "font-family:'Times New Roman',serif;";
+  const CELL = 'border:solid windowtext 1.0pt;padding:2pt 4pt;' + FONT + 'font-size:10.5pt;line-height:1.2;vertical-align:top;';
+  const td = (html, style, attrs) => '<td' + (attrs ? ' ' + attrs : '') + ' style="' + CELL + (style || '') + '">' + html + '</td>';
+  const th = (html, style) => '<th style="' + CELL + 'font-weight:bold;text-align:center;background:#F2F2F2;' + (style || '') + '">' + html + '</th>';
+  const table = rows => '<table border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse;width:100%;margin:4pt 0 8pt;">' + rows + '</table>';
+  const H1 = t => '<h1 style="' + FONT + 'font-size:12pt;font-weight:bold;text-align:center;margin:20pt 0 14pt;">' + t + '</h1>';
+  const H2 = t => '<h2 style="' + FONT + 'font-size:12pt;font-weight:bold;text-align:center;margin:14pt 0 8pt;">' + t + '</h2>';
+  const H3 = t => '<h3 style="' + FONT + 'font-size:12pt;font-weight:bold;margin:12pt 0 6pt;">' + t + '</h3>';
+  const PAGE_BREAK = '<br clear="all" style="page-break-before:always">';
+
+  function wordDoc(title, body) {
+    return '﻿<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
+      '<head><meta charset="utf-8"><title>' + esc(title) + '</title>' +
+      '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]-->' +
+      '<style>' + DOC_CSS + '</style></head><body><div class="WordSection1">' + body + '</div></body></html>';
+  }
+
+  /* placeholder: в превью показываем подсказку, в документе оставляем пустое место */
+  function val(v, label, preview) {
+    const t = String(v || '').trim();
+    if (t) return esc(t);
+    return preview ? '<span class="ph">' + esc(label) + '</span>' : '________________';
+  }
+
+  function addressee(form, preview) {
+    const lines = [
+      val(form.addrLine1, 'Должность адресата', preview),
+      val(form.addrLine2, 'Организация адресата', preview)
+    ];
+    const name = String(form.addrName || '').trim();
+    if (name) lines.push(esc(name));
+    else if (preview) lines.push('<span class="ph">И.О. Фамилия адресата</span>');
+    return lines.map(l => '<p class="r">' + l + '</p>').join('');
+  }
+
+  function levelPhrase(c) {
+    if (c.kzi >= 10000) return 'минимальный базовый уровень защищённости';
+    if (c.kzi > 7500) return 'низкий уровень защищённости';
+    return 'критический уровень защищённости';
+  }
+
+  function letterBody(c, form, opts) {
+    const preview = !!(opts && opts.preview);
+    const fmt = opts.fmt;
+    const date = opts.date;
+    let h = '';
+    h += '<p>На бланке организации</p>';
+    h += '<p><b>' + val(form.org, 'Название организации', preview) + '</b></p>';
+    h += '<p>&nbsp;</p>';
+    h += addressee(form, preview);
+    h += H1('Отчёт о расчёте показателя защищённости (Кзи)');
+    h += '<p class="ind">В соответствии с подпунктом «а» пункта 31 Требований о защите информации, содержащейся в государственных информационных системах, иных информационных системах государственных органов, государственных унитарных предприятий, государственных учреждений, утверждённых приказом ФСТЭК России от 11.04.2025 № 117, направляем сведения о рассчитанном показателе защищённости.</p>';
+    h += '<p class="ind">Расчёт выполнен ' + esc(date) + ' по Методике оценки показателя состояния технической защиты информации в информационных системах и обеспечения безопасности значимых объектов критической информационной инфраструктуры Российской Федерации, утверждённой ФСТЭК России 11.11.2025.</p>';
+    h += '<p class="ind"><b>Показатель защищённости Кзи = ' + fmt(c.kzi) + '</b> (' + levelPhrase(c) + ').</p>';
+    h += '<p class="ind">Документы и материалы, подтверждающие результаты расчёта значения показателя защищённости Кзи, в приложении.</p>';
+    h += '<p>&nbsp;</p><p>&nbsp;</p>';
+    h += '<p>С уважением,</p>';
+    h += '<p>' + val(form.post, 'Должность руководителя', preview) + ' __________________ / <b>' + val(form.head, 'И.О. Фамилия', preview) + '</b></p>';
+    h += '<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>';
+    h += '<p class="small">Исполнитель: ' + val(form.executor, 'И.О. Фамилия исполнителя', preview) + '</p>';
+    h += '<p class="small">Тел.: ' + val(form.phone, 'телефон', preview) + '</p>';
+    h += '<p class="small">E-mail: ' + val(form.email, 'адрес электронной почты', preview) + '</p>';
+    return h;
+  }
+
+  function statusText(x) {
+    if (x.na) return 'Не применимо';
+    return x.ok ? 'Выполнено' : 'Не выполнено';
+  }
+
+  function appendix(c, form, opts) {
+    const fmt = opts.fmt;
+    let h = PAGE_BREAK;
+    h += '<p class="r" style="text-align:right;margin:0;">Приложение</p>';
+    h += '<p class="r" style="text-align:right;margin:0;">к отчёту о расчёте показателя защищённости (Кзи)</p>';
+    h += H2('Расчёт показателя защищённости Кзи');
+    h += '<p>Организация: ' + (String(form.org || '').trim() ? esc(form.org) : '________________') + '. Дата расчёта: ' + esc(opts.date) + '.</p>';
+    h += '<p>Кзи = (k11 + k12 + k13)·R1 + (k21 + k22 + k23 + k24)·R2 + (k31 + k32 + k33 + k34 + k35 + k36)·R3 + (k41 + k42 + k43)·R4</p>';
+    let rows = '<tr>' + th('Код', 'width:8%;white-space:nowrap;') + th('Частный показатель безопасности') + th('Значение по Методике', 'width:12%;') + th('Присвоенное значение', 'width:12%;') + th('Результат', 'width:17%;') + '</tr>';
+    c.groups.forEach(gr => {
+      const g = gr.g;
+      rows += '<tr>' + td('Группа ' + g.id + '. ' + esc(g.fullTitle || g.title) + ' (R' + g.id + ' = ' + fmt(g.R * 100) + ')', 'font-weight:bold;background:#F7F7F7;', 'colspan="5"') + '</tr>';
+      let sumK = 0;
+      gr.inds.forEach(x => {
+        const assigned = x.ok ? x.ind.k : 0;
+        sumK += assigned;
+        rows += '<tr>' + td(x.ind.code, 'text-align:center;white-space:nowrap;width:8%;') + td(esc(x.ind.title)) + td(fmt(x.ind.k * 100), 'text-align:center;') +
+          td(assigned ? fmt(assigned * 100) : '0', 'text-align:center;') +
+          td(statusText(x) + (x.na ? ': ' + esc(x.ind.na.charAt(0).toLowerCase() + x.ind.na.slice(1)) : '')) + '</tr>';
+      });
+      rows += '<tr>' + td('Сумма k' + g.id + 'i = ' + fmt(sumK * 100) + ', вклад группы (Σk' + g.id + 'i · R' + g.id + ')', 'font-weight:bold;', 'colspan="3"') +
+        td(fmt(gr.score), 'text-align:center;font-weight:bold;') + td('из ' + fmt(gr.max)) + '</tr>';
+    });
+    rows += '<tr>' + td('Показатель защищённости Кзи', 'font-weight:bold;', 'colspan="3"') + td(fmt(c.kzi), 'text-align:center;font-weight:bold;') + td(esc(c.level.name) + ' уровень') + '</tr>';
+    h += table(rows);
+    h += '<p>Уровни защищённости по Методике:</p><ul>' +
+      '<li>Кзи = 1: минимальный базовый уровень («зелёный»)</li>' +
+      '<li>0,75 &lt; Кзи &lt; 1: низкий уровень («оранжевый»)</li>' +
+      '<li>Кзи ≤ 0,75: критический уровень («красный»)</li></ul>';
+    return h;
+  }
+
+  function letterDoc(c, form, opts) {
+    return wordDoc('Отчёт о расчёте показателя защищённости (Кзи)', letterBody(c, form, opts) + appendix(c, form, opts));
+  }
+
+  function currentBody(c, st, opts) {
+    const fmt = opts.fmt;
+    const preview = !!opts.preview;
+    let h = H1('Текущий отчёт о показателе защищённости (Кзи)');
+    h += '<p>Организация: ' + (String(st.form.org || '').trim() ? esc(st.form.org) : (preview ? '<span class="ph">не указана</span>' : 'не указана')) + '</p>';
+    h += '<p>Дата формирования: ' + esc(opts.date) + '</p>';
+    h += '<p><b>Текущее значение Кзи: ' + fmt(c.kzi) + '</b>. Уровень защищённости: ' + esc(c.level.name.toLowerCase()) + ' («' + esc(c.level.color) + '»).</p>';
+    h += '<p>Выполнено показателей: ' + c.met + ' из ' + c.total + '. Отмечено мер: ' + c.checked + ' из ' + c.totalItems + '.</p>';
+
+    h += H3('Результаты по группам');
+    let rows = '<tr>' + th('Группа показателей') + th('R', 'width:10%;') + th('Выполнено показателей', 'width:20%;') + th('Вклад в Кзи', 'width:20%;') + '</tr>';
+    c.groups.forEach(gr => {
+      rows += '<tr>' + td(gr.g.id + '. ' + esc(gr.g.fullTitle || gr.g.title)) + td(fmt(gr.g.R * 100), 'text-align:center;') + td(gr.met + ' из ' + gr.total, 'text-align:center;') + td(fmt(gr.score) + ' из ' + fmt(gr.max), 'text-align:center;') + '</tr>';
+    });
+    h += table(rows);
+
+    h += H3('Показатели');
+    rows = '<tr>' + th('№', 'width:6%;') + th('Показатель') + th('Вес', 'width:8%;') + th('Вклад', 'width:9%;') + th('Статус', 'width:14%;') + th('Невыполненные меры', 'width:32%;') + '</tr>';
+    c.groups.forEach(gr => {
+      gr.inds.forEach(x => {
+        const miss = x.na || x.ok ? '' : x.ind.items.filter((_, i) => !st.items[x.ind.id][i]).map(t => '• ' + esc(t)).join('<br>');
+        rows += '<tr>' + td(x.ind.id, 'text-align:center;white-space:nowrap;width:6%;') + td(esc(x.ind.title)) + td(fmt(x.ind.k * 100), 'text-align:center;') + td(fmt(x.contrib), 'text-align:center;') + td(statusText(x)) + td(miss || '&nbsp;') + '</tr>';
+      });
+    });
+    h += table(rows);
+
+    const gaps = opts.priorities || [];
+    h += H3('Приоритет устранения несоответствий');
+    if (gaps.length) {
+      h += '<ol>' + gaps.map(x => '<li>' + x.ind.id + ' ' + esc(x.ind.title) + ': прирост Кзи +' + fmt(x.max) + ', осталось мер ' + (x.n - x.c) + ' из ' + x.n + '.</li>').join('') + '</ol>';
+    } else {
+      h += '<p>Несоответствий нет, минимальный базовый уровень обеспечен.</p>';
+    }
+
+    const notes = METHOD.groups.filter(g => String(st.notes[g.id] || '').trim());
+    h += H3('Заметки по группам');
+    if (notes.length) {
+      notes.forEach(g => { h += '<p><b>Группа ' + g.id + '. ' + esc(g.fullTitle || g.title) + ':</b> ' + esc(st.notes[g.id]).replace(/\n/g, '<br>') + '</p>'; });
+    } else {
+      h += '<p>Заметок нет.</p>';
+    }
+    h += '<p>&nbsp;</p><p class="small">Расчёт по Методике ФСТЭК России от 11.11.2025. Сформировано в калькуляторе Кзи CheckU (УЦСБ).</p>';
+    return h;
+  }
+
+  function currentDoc(c, st, opts) {
+    return wordDoc('Текущий отчёт по Кзи', currentBody(c, st, opts));
+  }
+
+  function download(filename, html) {
+    const blob = new Blob([html], { type: 'application/msword' });
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) { window.navigator.msSaveOrOpenBlob(blob, filename); return; }
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
+
+  return { letterBody, appendix, letterDoc, currentBody, currentDoc, download };
+})();
+
+</script>
+<script>
+/* Калькулятор Кзи в стиле CheckU. Без зависимостей, состояние хранится в localStorage браузера. */
+(function () {
+  'use strict';
+
+  /* ---------- utils ---------- */
+  const $ = (s, r) => (r || document).querySelector(s);
+  const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const pad2 = n => String(n).padStart(2, '0');
+  const today = () => { const d = new Date(); return pad2(d.getDate()) + '.' + pad2(d.getMonth() + 1) + '.' + d.getFullYear(); };
+  const isoDate = () => { const d = new Date(); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); };
+
+  /* Значения хранятся в десятитысячных долях (10000 = 1). Вывод точный, от 2 до 4 знаков после запятой. */
+  function fmt(u) {
+    u = Math.round(u);
+    const neg = u < 0;
+    u = Math.abs(u);
+    const int = Math.floor(u / 10000);
+    let frac = String(u % 10000).padStart(4, '0').replace(/0+$/, '');
+    if (frac.length < 2) frac = frac.padEnd(2, '0');
+    return (neg ? '-' : '') + int + ',' + frac;
+  }
+  function plural(n, one, few, many) {
+    const m10 = n % 10, m100 = n % 100;
+    if (m10 === 1 && m100 !== 11) return one;
+    if (m10 >= 2 && m10 <= 4 && (m100 < 12 || m100 > 14)) return few;
+    return many;
+  }
+
+  const LOGO_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360.05 53.89" role="img" aria-label="CheckU"><path fill="#EA9B28" fill-rule="evenodd" d="M30.10,53.89 26.77,53.83 23.60,52.66 19.44,50.12 5.60,42.67 2.94,40.85 1.36,39.22 0.34,37.05 0.02,34.22 0.00,6.88 0.60,4.38 2.60,1.73 4.77,0.54 6.94,0.00 55.46,0.05 55.75,0.38 55.67,0.72 54.10,1.81 42.27,8.67 10.94,8.62 9.77,8.80 9.33,9.22 9.19,33.05 9.39,34.22 11.41,35.72 16.27,38.15 18.60,39.67 28.12,44.72 29.27,44.97 30.27,44.79 32.77,43.15 39.27,39.79 43.60,37.12 46.62,35.72 48.27,34.55 48.96,33.22 48.87,23.55 48.27,23.09 47.44,23.20 31.27,31.77 29.10,32.43 28.27,32.41 26.13,31.72 16.29,26.55 16.11,25.88 16.09,17.88 16.30,16.72 16.77,16.55 18.27,17.15 20.60,18.67 21.66,19.05 28.10,22.72 29.44,22.90 56.94,8.32 57.44,8.19 57.91,8.55 58.01,35.72 57.77,37.05 56.79,38.72 55.09,40.72 52.10,42.79 36.60,51.12 33.94,52.78 30.10,53.89Z"/><path fill="#27292D" fill-rule="evenodd" d="M104.44,48.06 98.77,47.99 96.60,47.65 94.77,47.09 93.44,47.02 90.10,45.79 88.10,44.73 83.60,41.91 81.22,39.55 78.26,35.88 77.19,33.88 76.85,32.55 76.21,31.38 75.81,27.05 76.18,23.05 77.27,19.61 78.18,17.72 79.49,15.88 83.39,11.88 87.60,9.12 91.44,7.52 92.44,7.47 93.27,7.05 94.60,6.86 96.60,6.14 102.94,5.62 109.27,6.02 114.27,7.20 116.60,8.09 120.41,10.22 124.44,13.60 125.77,15.18 127.70,18.22 128.12,19.72 128.91,21.22 128.77,22.01 128.27,22.34 116.60,22.30 112.94,18.38 110.77,16.92 109.44,16.27 106.10,15.16 103.27,14.96 100.27,15.20 98.77,15.82 97.10,16.10 93.44,17.95 91.27,20.12 90.21,21.72 89.44,23.72 89.12,25.38 88.95,27.55 89.25,30.55 91.27,34.18 93.61,36.55 96.12,37.88 98.77,38.88 103.44,39.46 108.10,38.72 111.76,36.72 113.94,34.79 115.44,32.72 116.60,32.04 128.10,32.02 128.78,32.38 127.91,35.05 126.77,37.36 124.60,40.22 120.60,43.82 116.77,45.78 113.60,46.86 111.77,47.09 109.27,47.83 104.44,48.06ZM172.44,47.05 162.77,47.06 161.70,46.72 161.47,46.05 161.53,33.72 160.79,27.72 159.70,25.72 158.44,24.41 156.27,23.39 154.10,23.03 150.77,23.38 148.85,24.22 147.30,25.72 146.18,27.55 145.22,32.38 145.13,46.05 144.86,46.88 144.10,47.20 134.94,47.18 133.94,46.84 133.65,46.05 133.65,7.88 133.94,7.09 134.94,6.75 144.10,6.73 144.86,7.05 145.13,7.88 145.07,19.72 145.44,20.57 145.77,20.48 148.10,18.31 149.77,17.35 153.94,16.37 157.44,16.16 163.31,17.22 165.77,18.19 168.77,20.27 170.80,23.22 171.79,25.38 172.81,29.38 173.11,35.72 173.14,46.05 172.95,46.72 172.44,47.05ZM304.10,47.10 292.94,47.20 292.27,47.01 285.25,39.72 278.86,32.55 278.44,32.35 278.10,32.55 277.91,33.38 277.98,46.05 277.77,46.75 277.27,47.06 276.27,47.17 267.10,47.15 266.44,46.90 266.17,46.05 266.16,7.88 266.44,7.14 267.77,6.77 277.10,6.76 277.84,7.22 277.91,28.38 278.02,29.22 278.27,29.55 278.94,29.33 290.27,18.01 291.77,17.77 301.27,17.75 302.41,18.05 302.45,18.55 302.10,19.05 291.11,30.22 290.89,30.88 291.22,31.72 304.25,46.05 304.48,46.72 304.10,47.10ZM336.10,48.39 328.60,47.80 322.10,45.60 317.44,42.89 312.98,38.38 310.33,33.38 309.85,29.55 309.38,27.72 309.30,7.88 309.41,7.38 309.77,7.01 310.77,6.76 321.10,6.75 322.10,7.09 322.39,7.88 322.34,28.22 323.12,32.05 325.10,34.91 326.10,35.82 328.10,36.87 330.77,37.94 336.10,38.51 340.10,37.72 343.44,35.82 345.66,33.05 346.52,31.05 347.03,28.22 346.99,7.88 347.22,7.05 347.94,6.73 359.10,6.73 359.82,7.05 360.05,7.88 359.94,29.38 358.88,34.05 357.86,36.22 356.17,38.55 355.75,39.55 352.60,42.70 347.77,45.76 346.23,46.05 345.10,46.71 343.10,47.17 341.60,47.87 336.10,48.39ZM201.27,48.05 198.44,48.14 192.44,47.76 186.77,46.06 182.77,43.68 179.31,40.22 177.15,36.22 176.67,31.88 177.16,28.05 178.19,25.72 179.32,23.88 182.83,20.22 186.77,18.06 189.84,17.05 192.77,16.41 196.77,15.96 203.27,16.27 209.27,18.14 212.76,20.22 215.88,23.38 217.95,27.55 218.52,31.72 218.31,32.38 217.77,32.71 188.94,32.75 188.27,33.09 188.11,34.05 189.01,37.22 191.29,40.22 193.60,41.81 196.60,42.64 200.27,42.50 203.27,41.63 206.19,39.38 206.82,38.22 207.27,36.74 207.77,36.42 217.27,36.44 218.10,36.68 218.52,37.05 218.62,37.88 217.91,40.05 217.14,41.55 215.26,43.55 213.60,44.72 212.44,45.09 211.27,45.88 206.44,47.47 201.27,48.05ZM244.10,48.39 237.44,47.95 233.60,46.81 231.37,45.88 227.98,43.72 226.08,41.88 224.20,39.55 223.00,37.38 222.23,34.55 222.02,32.22 222.62,28.72 223.27,27.08 224.94,24.34 228.07,21.22 231.27,19.10 232.77,18.35 236.10,17.64 237.60,17.04 242.94,16.61 248.60,17.06 250.81,17.88 252.44,18.14 256.10,20.12 258.60,22.38 259.77,23.58 261.94,27.45 262.14,28.38 261.44,28.90 251.60,28.89 250.77,28.31 249.60,26.38 247.39,24.38 245.44,23.64 243.10,23.26 238.60,24.12 236.77,25.26 235.29,26.72 234.22,28.72 233.66,30.72 233.53,32.38 234.10,36.22 236.24,39.55 237.82,40.72 239.60,41.65 241.94,42.07 246.10,41.72 248.77,39.95 249.77,38.76 250.44,37.38 251.60,36.78 261.27,36.73 261.77,36.88 262.03,37.22 261.94,38.09 259.88,41.38 257.60,43.70 256.10,44.79 252.10,46.70 248.77,47.82 244.10,48.39ZM206.12,28.22 206.68,27.88 206.79,27.38 206.18,26.38 205.94,25.49 203.77,23.23 201.50,22.05 198.27,21.77 194.44,21.99 192.27,23.05 190.16,25.38 189.11,27.55 189.27,28.08 189.94,28.34 206.12,28.22Z"/></svg>';
+  const SHIELD_SVG = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0.00 0.00 58.01 53.89"><path fill="#EA9B28" fill-rule="evenodd" d="M30.10,53.89 26.77,53.83 23.60,52.66 19.44,50.12 5.60,42.67 2.94,40.85 1.36,39.22 0.34,37.05 0.02,34.22 0.00,6.88 0.60,4.38 2.60,1.73 4.77,0.54 6.94,0.00 55.46,0.05 55.75,0.38 55.67,0.72 54.10,1.81 42.27,8.67 10.94,8.62 9.77,8.80 9.33,9.22 9.19,33.05 9.39,34.22 11.41,35.72 16.27,38.15 18.60,39.67 28.12,44.72 29.27,44.97 30.27,44.79 32.77,43.15 39.27,39.79 43.60,37.12 46.62,35.72 48.27,34.55 48.96,33.22 48.87,23.55 48.27,23.09 47.44,23.20 31.27,31.77 29.10,32.43 28.27,32.41 26.13,31.72 16.29,26.55 16.11,25.88 16.09,17.88 16.30,16.72 16.77,16.55 18.27,17.15 20.60,18.67 21.66,19.05 28.10,22.72 29.44,22.90 56.94,8.32 57.44,8.19 57.91,8.55 58.01,35.72 57.77,37.05 56.79,38.72 55.09,40.72 52.10,42.79 36.60,51.12 33.94,52.78 30.10,53.89Z"/></svg>';
+
+  const ICONS = {
+    grid: '<rect x="3.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.8"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.8"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.8"/>',
+    check: '<path d="m8.5 11.5 3 3L21 5"/><path d="M20 12.5v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2h10"/>',
+    file: '<path d="M14 3.5H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5z"/><path d="M14 3.5v5h5"/><path d="M9 13h6M9 16.5h6M9 9.5h2"/>',
+    book: '<path d="M3 5.5h5.5A3.5 3.5 0 0 1 12 9v11a2.5 2.5 0 0 0-2.5-2.5H3z"/><path d="M21 5.5h-5.5A3.5 3.5 0 0 0 12 9v11a2.5 2.5 0 0 1 2.5-2.5H21z"/>',
+    shield: '<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/>',
+    reset: '<path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1L3.5 8.5"/><path d="M3.5 3.5v5h5"/>',
+    chevronsLeft: '<path d="m11 17-5-5 5-5M18 17l-5-5 5-5"/>',
+    arrowUpRight: '<path d="M7 17 17 7M8 7h9v9"/>',
+    search: '<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>',
+    chevronDown: '<path d="m6 9 6 6 6-6"/>',
+    download: '<path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 20h14"/>',
+    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/>',
+    phone: '<path d="M21 16.5v3a2 2 0 0 1-2.2 2 19 19 0 0 1-8.3-3 18.7 18.7 0 0 1-5.8-5.8 19 19 0 0 1-3-8.3A2 2 0 0 1 3.7 2.2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L7.6 10a15 15 0 0 0 6.4 6.4l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>',
+    menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    info: '<circle cx="12" cy="12" r="8.5"/><path d="M12 16v-4.5M12 8h.01"/>',
+    copy: '<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/>',
+    send: '<path d="M21 3 10.5 13.5"/><path d="m21 3-6.5 18-4-7.5L3 9.5z"/>',
+    list: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>',
+    bolt: '<path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/>',
+    external: '<path d="M14 4h6v6M10 14 20 4M19 14v4.5a1.5 1.5 0 0 1-1.5 1.5h-12A1.5 1.5 0 0 1 4 18.5v-12A1.5 1.5 0 0 1 5.5 5H10"/>'
+  };
+  const icon = n => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICONS[n] + '</svg>';
+  const TICK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5 10 17.5 19.5 7"/></svg>';
+
+  /* ---------- model ---------- */
+  const INDS = [];
+  METHOD.groups.forEach(g => g.indicators.forEach(ind => INDS.push(ind)));
+  const IND_BY_ID = {};
+  INDS.forEach(i => { IND_BY_ID[i.id] = i; });
+  const TOTAL_ITEMS = INDS.reduce((s, i) => s + i.items.length, 0);
+
+  const LEVELS = {
+    base: { key: 'base', name: 'Минимальный базовый', tag: 'green', css: 'var(--green)', color: 'зелёный', desc: 'Минимальный базовый уровень защиты от актуальных угроз обеспечен' },
+    low: { key: 'low', name: 'Низкий', tag: 'orange', css: 'var(--orange)', color: 'оранжевый', desc: 'Минимальный уровень не обеспечен, есть предпосылки к реализации угроз' },
+    crit: { key: 'crit', name: 'Критический', tag: 'red', css: 'var(--red)', color: 'красный', desc: 'Минимальный уровень не обеспечен, есть реальная возможность реализации угроз' }
+  };
+  const levelOf = u => (u >= 10000 ? LEVELS.base : u > 7500 ? LEVELS.low : LEVELS.crit);
+
+  const FORM_KEYS = ['org', 'post', 'head', 'executor', 'phone', 'email', 'region', 'addrLine1', 'addrLine2', 'addrName'];
+  const LEAD_KEYS = ['name', 'org', 'phone', 'email', 'comment'];
+
+  function defaultState() {
+    const items = {}, na = {}, notes = {}, form = {}, lead = { consent: false }, open = {}, openInd = {};
+    INDS.forEach(ind => {
+      items[ind.id] = ind.items.map(() => false);
+      if (ind.na) na[ind.id] = false;
+      openInd[ind.id] = true;
+    });
+    METHOD.groups.forEach(g => { notes[g.id] = ''; open[g.id] = true; });
+    FORM_KEYS.forEach(k => { form[k] = ''; });
+    LEAD_KEYS.forEach(k => { lead[k] = ''; });
+    return { v: 1, items, na, notes, form, lead, ui: { open, openInd, collapsed: false, seenStart: false, preview: 'letter' } };
+  }
+
+  function normalize(s) {
+    const d = defaultState();
+    if (!s || typeof s !== 'object') return d;
+    INDS.forEach(ind => {
+      const a = s.items && Array.isArray(s.items[ind.id]) ? s.items[ind.id] : [];
+      d.items[ind.id] = ind.items.map((_, i) => a[i] === true);
+      if (ind.na) d.na[ind.id] = !!(s.na && s.na[ind.id] === true);
+    });
+    METHOD.groups.forEach(g => { if (s.notes && typeof s.notes[g.id] === 'string') d.notes[g.id] = s.notes[g.id].slice(0, 5000); });
+    FORM_KEYS.forEach(k => { if (s.form && typeof s.form[k] === 'string') d.form[k] = s.form[k].slice(0, 300); });
+    LEAD_KEYS.forEach(k => { if (s.lead && typeof s.lead[k] === 'string') d.lead[k] = s.lead[k].slice(0, 3000); });
+    d.lead.consent = !!(s.lead && s.lead.consent === true);
+    const u = s.ui && typeof s.ui === 'object' ? s.ui : {};
+    if (u.open) METHOD.groups.forEach(g => { if (typeof u.open[g.id] === 'boolean') d.ui.open[g.id] = u.open[g.id]; });
+    if (u.openInd) INDS.forEach(i => { if (typeof u.openInd[i.id] === 'boolean') d.ui.openInd[i.id] = u.openInd[i.id]; });
+    d.ui.collapsed = u.collapsed === true;
+    d.ui.seenStart = u.seenStart === true;
+    d.ui.preview = u.preview === 'current' ? 'current' : 'letter';
+    return d;
+  }
+
+  let state = (function load() {
+    try {
+      const raw = localStorage.getItem(CONFIG.storageKey);
+      if (raw) return normalize(JSON.parse(raw));
+    } catch (e) { /* хранилище недоступно, работаем в памяти */ }
+    return defaultState();
+  })();
+
+  let saveTimer = 0;
+  function save() {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(state)); } catch (e) { /* нет доступа к хранилищу */ }
+    }, 120);
+  }
+
+  function calc() {
+    let kzi = 0, met = 0, checked = 0, touched = false;
+    const groups = METHOD.groups.map(g => {
+      let score = 0, gmet = 0;
+      const inds = g.indicators.map(ind => {
+        const arr = state.items[ind.id];
+        const c = arr.filter(Boolean).length;
+        const n = ind.items.length;
+        const na = !!(ind.na && state.na[ind.id]);
+        const ok = na || c === n;
+        const max = g.R * ind.k;
+        const contrib = ok ? max : 0;
+        if (c > 0 || na) touched = true;
+        checked += c;
+        if (ok) { gmet++; met++; }
+        score += contrib;
+        return { ind, g, c, n, na, ok, max, contrib };
+      });
+      kzi += score;
+      return { g, inds, score, max: g.R * 100, met: gmet, total: inds.length, full: score === g.R * 100 };
+    });
+    return { groups, kzi, met, total: INDS.length, checked, totalItems: TOTAL_ITEMS, touched, level: levelOf(kzi) };
+  }
+
+  function priorities(c) {
+    const out = [];
+    c.groups.forEach(gr => gr.inds.forEach(x => { if (!x.ok) out.push(x); }));
+    out.sort((a, b) => (b.max - a.max) || ((a.n - a.c) - (b.n - b.c)) || a.ind.id.localeCompare(b.ind.id));
+    return out;
+  }
+
+  let lastCalc = calc();
+
+  /* ---------- shell ---------- */
+  const root = document.getElementById('root');
+  const NAV = [
+    { id: 'dashboard', label: 'Дашборд', icon: 'grid' },
+    { id: 'assessment', label: 'Оценка', icon: 'check' },
+    { id: 'report', label: 'Отчёт', icon: 'file' },
+    { sep: true },
+    { id: 'method', label: 'Методика', icon: 'book' },
+    { id: 'service', label: 'Экспресс-повышение', icon: 'shield' }
+  ];
+  const TITLES = { dashboard: 'Дашборд', assessment: 'Оценка', report: 'Отчёт', method: 'Методика', service: 'Экспресс-повышение' };
+
+  function renderShell() {
+    root.innerHTML =
+      '<div class="app' + (state.ui.collapsed ? ' is-collapsed' : '') + '" id="app">' +
+        '<header class="topbar">' +
+          '<button class="icon-btn burger" type="button" data-action="menu" aria-label="Открыть меню">' + icon('menu') + '</button>' +
+          '<a class="topbar__logo" href="#/assessment" aria-label="CheckU, калькулятор Кзи">' + LOGO_SVG.replace('<svg', '<svg class="logo-full"') + SHIELD_SVG.replace('<svg', '<svg class="logo-shield"') + '</a>' +
+          '<div class="topbar__right">' +
+            '<a class="kzi-chip" href="#/dashboard" id="kzi-chip" title="Текущий показатель защищённости"></a>' +
+            '<button class="icon-btn" type="button" data-action="reset" title="Сбросить ответы" aria-label="Сбросить ответы">' + icon('reset') + '</button>' +
+          '</div>' +
+        '</header>' +
+        '<aside class="sidebar" id="sidebar">' +
+          '<nav class="nav" aria-label="Разделы">' +
+            NAV.map(n => n.sep ? '<div class="nav__sep" role="separator"></div>' :
+              '<a class="nav__item" href="#/' + n.id + '" data-nav="' + n.id + '" title="' + n.label + '">' + icon(n.icon) + '<span class="nav__text">' + n.label + '</span></a>').join('') +
+          '</nav>' +
+          '<div class="sidebar__bottom">' +
+            '<p class="sidebar__brand">Расчёт по Методике ФСТЭК России от 11.11.2025. Ответы хранятся только в вашем браузере.</p>' +
+            '<button class="collapse-btn" type="button" data-action="collapse" aria-label="Свернуть меню">' + icon('chevronsLeft') + '</button>' +
+          '</div>' +
+        '</aside>' +
+        '<div class="backdrop" data-action="menu-close"></div>' +
+        '<main class="main" id="main" tabindex="-1"></main>' +
+      '</div>';
+  }
+
+  function renderChip(c) {
+    const el = $('#kzi-chip');
+    if (!el) return;
+    el.innerHTML = '<span class="kzi-chip__label">Кзи</span><span class="kzi-chip__value">' + (c.touched ? fmt(c.kzi) : '-') + '</span>' +
+      (c.touched ? '<span class="tag tag--sm tag--' + c.level.tag + '">' + c.level.name + '</span><span class="kzi-chip__dot kzi-chip__dot--' + c.level.tag + '" aria-hidden="true"></span>' : '');
+  }
+
+  /* ---------- router ---------- */
+  let current = '';
+  const VIEWS = { start: null, dashboard: viewDashboard, assessment: viewAssessment, report: viewReport, method: viewMethod, service: viewService };
+
+  function parseHash() {
+    const h = (location.hash || '').replace(/^#\/?/, '');
+    const parts = h.split('/');
+    return { name: parts[0] || '', arg: decodeURIComponent(parts[1] || '') };
+  }
+
+  function route() {
+    let { name, arg } = parseHash();
+    if (!(name in VIEWS)) {
+      name = state.ui.seenStart ? 'assessment' : 'start';
+      history.replaceState(null, '', '#/' + name);
+      arg = '';
+    }
+    closeMenus();
+    if (name === 'start') {
+      current = 'start';
+      renderStart();
+      document.title = 'Калькулятор Кзи · CheckU';
+      window.scrollTo(0, 0);
+      return;
+    }
+    if (!state.ui.seenStart) { state.ui.seenStart = true; save(); }
+    if (!$('#app')) renderShell();
+    current = name;
+    $$('.nav__item').forEach(a => {
+      const on = a.dataset.nav === name;
+      a.classList.toggle('is-active', on);
+      if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
+    });
+    $('#app').classList.remove('is-menu');
+    lastCalc = calc();
+    renderChip(lastCalc);
+    VIEWS[name](lastCalc, arg);
+    document.title = TITLES[name] + ' · Калькулятор Кзи · CheckU';
+    if (!arg) window.scrollTo(0, 0);
+  }
+
+  function afterChange() {
+    save();
+    lastCalc = calc();
+    renderChip(lastCalc);
+    if (current === 'assessment') updateAssessment(lastCalc);
+  }
+
+  /* ---------- start ---------- */
+  function renderStart() {
+    root.innerHTML =
+      '<div class="start">' +
+        '<div class="frame">' +
+          '<div class="frame__deco frame__deco--top"></div><div class="frame__deco frame__deco--left"></div>' +
+          '<div class="frame__deco frame__deco--corner"></div><div class="frame__deco frame__deco--bottom"></div>' +
+          '<div class="frame__notch"></div>' +
+          '<div class="frame__tab"><div class="frame__tab-l"><div class="frame__logo">' + LOGO_SVG + '</div></div>' +
+            '<div class="frame__tab-s"><svg viewBox="0 0 64 76" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0C30 0 34 44 64 44V76H0Z" fill="#fff"/></svg></div>' +
+            '<div class="frame__tab-r"></div></div>' +
+          '<div class="frame__card">' +
+            '<h1>Калькулятор показателя защищённости</h1>' +
+            '<p>Расчёт Кзи по Методике ФСТЭК России от 11.11.2025 согласно Требованиям, утверждённым приказом ФСТЭК России от 11.04.2025 № 117.</p>' +
+            '<ul class="facts">' +
+              '<li><span>' + icon('list') + '</span>16 показателей в четырёх группах с весами Методики</li>' +
+              '<li><span>' + icon('bolt') + '</span>Кзи и уровень защищённости пересчитываются сразу</li>' +
+              '<li><span>' + icon('file') + '</span>Отчёт во ФСТЭК России в формате Word</li>' +
+            '</ul>' +
+            '<button class="btn btn--dark btn--block" type="button" data-action="start">Начать оценку</button>' +
+            '<a class="start__link" href="#/method">Как считается Кзи</a>' +
+          '</div>' +
+        '</div>' +
+        '<div class="start__foot">© УЦСБ ' + new Date().getFullYear() + '</div>' +
+      '</div>';
+  }
+
+  /* ---------- assessment ---------- */
+  const VERDICTS = [
+    { v: 'all', l: 'Все' },
+    { v: 'ok', l: 'Соответствует' },
+    { v: 'fail', l: 'Не соответствует' },
+    { v: 'na', l: 'Не применимо' }
+  ];
+  let filterQ = '';
+  let filterV = 'all';
+
+  function viewAssessment(c, arg) {
+    filterQ = '';
+    filterV = 'all';
+    $('#main').innerHTML =
+      '<div class="page"><section class="card">' +
+        '<nav class="breadcrumb" aria-label="Навигация"><a href="#/dashboard">Калькулятор Кзи</a><span>/</span><span>Оценка</span></nav>' +
+        '<h1 class="page-title">Расчёт показателя защищённости</h1>' +
+        '<p class="page-sub">Отметьте выполненные меры. Показатель засчитывается, когда выполнены все его меры. Веса и порядок расчёта соответствуют Методике ФСТЭК России от 11.11.2025.</p>' +
+        '<div class="summary" id="summary"></div>' +
+        '<h2 class="section-title">Проверяемые требования</h2>' +
+        '<label class="search">' + icon('search') + '<input type="search" id="q" placeholder="Поиск по наименованию требования" autocomplete="off" aria-label="Поиск по наименованию требования"></label>' +
+        '<div class="filters">' +
+          '<div class="select" id="verdict-select">' +
+            '<button type="button" class="select__btn" data-action="verdict-toggle" aria-haspopup="listbox" aria-expanded="false"><span id="verdict-label">Вердикт</span>' + icon('chevronDown') + '</button>' +
+            '<div class="select__menu" id="verdict-menu" role="listbox" hidden>' +
+              VERDICTS.map(o => '<button type="button" role="option" data-action="verdict-set" data-v="' + o.v + '">' + o.l + '</button>').join('') +
+            '</div>' +
+          '</div>' +
+          '<div class="filters__right"><button type="button" class="btn btn--ghost" data-action="expand-all" id="expand-all">Развернуть всё</button></div>' +
+        '</div>' +
+        '<div class="req" id="req">' +
+          '<div class="req__head"><div></div><div>Группы требований</div><div>Коэффициент</div><div>Вклад в Кзи</div><div>Прогресс</div></div>' +
+          METHOD.groups.map(groupHtml).join('') +
+          '<div class="empty" id="req-empty" hidden>Ничего не найдено. Измените запрос или фильтр.</div>' +
+        '</div>' +
+      '</section></div>';
+    updateAssessment(c);
+    if (arg) focusIndicator(arg);
+  }
+
+  function groupHtml(g) {
+    const open = !!state.ui.open[g.id];
+    return '<div class="req-group' + (open ? ' is-open' : '') + '" data-group="' + g.id + '">' +
+      '<div class="req-row req-row--group" data-action="toggle-group" data-group="' + g.id + '">' +
+        '<div><button type="button" class="expander" aria-expanded="' + open + '" aria-label="Показать показатели группы" data-action="toggle-group" data-group="' + g.id + '"></button></div>' +
+        '<div class="req-row__title">' + g.id + '. ' + esc(g.fullTitle || g.title) + '<div class="ind-row__meta" data-bind="gmeta"></div></div>' +
+        '<div class="req-row__num req-row__k">' + fmt(g.R * 100) + '</div>' +
+        '<div class="req-row__num req-row__score" data-bind="gscore"></div>' +
+        '<div><span class="pill" data-bind="gpill"></span></div>' +
+      '</div>' +
+      '<div class="req-group__body">' +
+        '<div class="ind__head"><div></div><div>Показатель</div><div>Вес</div><div>Вклад</div><div>Меры</div><div>Вердикт</div></div>' +
+        g.indicators.map(ind => indHtml(g, ind)).join('') +
+        '<div class="group-notes"><label class="group-notes__label" for="note-' + g.id + '">Заметки по группе</label>' +
+          '<textarea class="textarea" id="note-' + g.id + '" data-note="' + g.id + '" placeholder="Заметки по группе..." rows="2">' + esc(state.notes[g.id]) + '</textarea></div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function indHtml(g, ind) {
+    const open = !!state.ui.openInd[ind.id];
+    const sid = ind.id.replace('.', '-');
+    return '<div class="ind' + (open ? ' is-open' : '') + '" data-ind="' + ind.id + '" id="ind-' + sid + '">' +
+      '<div class="ind-row" data-action="toggle-ind" data-ind="' + ind.id + '">' +
+        '<div><button type="button" class="expander" aria-expanded="' + open + '" aria-controls="indb-' + sid + '" aria-label="Показать меры показателя ' + ind.id + '" data-action="toggle-ind" data-ind="' + ind.id + '"></button></div>' +
+        '<div class="ind-row__title"><span class="ind-row__code">' + ind.id + '</span> ' + esc(ind.title) +
+          '<div class="ind-row__meta"><span>Вес ' + fmt(ind.k * 100) + '</span><span data-bind="contrib-m"></span><span class="pill" data-bind="pill-m"></span><span data-bind="verdict-m"></span></div>' +
+        '</div>' +
+        '<div class="ind-row__num ind-row__k">' + fmt(ind.k * 100) + '</div>' +
+        '<div class="ind-row__num ind-row__c" data-bind="contrib"></div>' +
+        '<div class="ind-row__p"><span class="pill" data-bind="pill"></span></div>' +
+        '<div class="ind-row__v" data-bind="verdict"></div>' +
+      '</div>' +
+      '<div class="ind__body" id="indb-' + sid + '">' +
+        '<div class="measures">' +
+          '<label class="check measures__all"><input type="checkbox" data-all="' + ind.id + '"><span class="check__box">' + TICK + '</span><span class="check__text">Отметить все меры</span></label>' +
+          ind.items.map((t, i) => '<label class="check measure"><input type="checkbox" data-item="' + ind.id + '" data-i="' + i + '"' + (state.items[ind.id][i] ? ' checked' : '') + '><span class="check__box">' + TICK + '</span><span class="check__text">' + esc(t) + '</span></label>').join('') +
+        '</div>' +
+        (ind.na ? '<div class="ind__na"><label class="switch"><input type="checkbox" data-na="' + ind.id + '"' + (state.na[ind.id] ? ' checked' : '') + '><span class="switch__track"></span><span class="switch__text"><b>Не применимо.</b> ' + esc(ind.na) + '. В этом случае Методика присваивает показателю максимальное значение.</span></label></div>' : '') +
+        '<details class="hint"><summary>' + icon('info') + 'Условие по Методике и подтверждающие материалы</summary><div class="hint__body">' +
+          '<p><b>Условие (' + ind.code + '):</b> ' + esc(ind.official) + '</p>' +
+          '<p><b>Чем подтверждается:</b> ' + esc(ind.evidence) + '</p>' +
+        '</div></details>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function verdictHtml(x) {
+    if (x.na) return '<span class="tag tag--gray">Не применимо</span>';
+    if (x.ok) return '<span class="tag tag--ok">Соответствует</span>';
+    if (x.c > 0) return '<span class="tag tag--red">Не соответствует</span>';
+    return '<span class="dash">-</span>';
+  }
+
+  function summaryHtml(c) {
+    const st = !c.touched ? ['Новая', 'blue'] : c.kzi >= 10000 ? ['Завершена', 'green'] : ['В работе', 'gold'];
+    const org = state.form.org.trim();
+    const pct = Math.round(c.met / c.total * 100);
+    return '' +
+      '<div class="summary__item"><div class="summary__label">Организация</div><div class="summary__value">' + (org ? esc(org) : '<a href="#/report">Указать</a>') + '</div></div>' +
+      '<div class="summary__item"><div class="summary__label">Статус</div><div class="summary__value"><span class="tag tag--' + st[1] + '">' + st[0] + '</span></div></div>' +
+      '<div class="summary__item"><div class="summary__label">Результат (Кзи)</div><div class="summary__value summary__value--kzi">' + (c.touched ? fmt(c.kzi) : '<span class="dash">-</span>') + '</div></div>' +
+      '<div class="summary__item"><div class="summary__label">Уровень</div><div class="summary__value">' + (c.touched ? '<span class="tag tag--' + c.level.tag + '">' + c.level.name + '</span>' : '<span class="dash">-</span>') + '</div></div>' +
+      '<div class="summary__item"><div class="summary__label">Дата расчёта</div><div class="summary__value">' + today() + '</div></div>' +
+      '<div class="summary__item summary__item--wide"><div class="summary__label">Выполнено показателей</div>' +
+        '<div class="progress"><div class="progress__track"><div class="progress__bar" style="width:' + pct + '%"></div></div><span class="progress__text">' + c.met + ' из ' + c.total + '</span></div></div>';
+  }
+
+  function updateAssessment(c) {
+    const sum = $('#summary');
+    if (!sum) return;
+    sum.innerHTML = summaryHtml(c);
+    c.groups.forEach(gr => {
+      const gEl = $('.req-group[data-group="' + gr.g.id + '"]');
+      if (!gEl) return;
+      $('[data-bind="gscore"]', gEl).innerHTML = fmt(gr.score) + ' <small>из ' + fmt(gr.max) + '</small>';
+      $('[data-bind="gmeta"]', gEl).innerHTML = '<span>R ' + fmt(gr.g.R * 100) + '</span><span>Вклад ' + fmt(gr.score) + ' из ' + fmt(gr.max) + '</span>';
+      const gp = $('[data-bind="gpill"]', gEl);
+      gp.textContent = gr.met + '/' + gr.total;
+      gp.className = 'pill' + (gr.full ? ' pill--done' : '');
+      gr.inds.forEach(x => {
+        const el = $('.ind[data-ind="' + x.ind.id + '"]', gEl);
+        if (!el) return;
+        el.classList.toggle('is-na', x.na);
+        const contrib = fmt(x.contrib);
+        $('[data-bind="contrib"]', el).textContent = contrib;
+        $('[data-bind="contrib-m"]', el).textContent = 'Вклад ' + contrib;
+        const pillCls = 'pill' + (x.na ? ' pill--na' : x.ok ? ' pill--done' : '');
+        ['pill', 'pill-m'].forEach(b => {
+          const p = $('[data-bind="' + b + '"]', el);
+          p.textContent = x.c + '/' + x.n;
+          p.className = pillCls;
+        });
+        const v = verdictHtml(x);
+        $('[data-bind="verdict"]', el).innerHTML = v;
+        $('[data-bind="verdict-m"]', el).innerHTML = v;
+        const all = $('input[data-all]', el);
+        all.checked = x.c === x.n;
+        all.indeterminate = x.c > 0 && x.c < x.n;
+        all.disabled = x.na;
+        $$('input[data-item]', el).forEach(inp => {
+          inp.checked = !!state.items[x.ind.id][+inp.dataset.i];
+          inp.disabled = x.na;
+        });
+      });
+    });
+    applyFilters();
+  }
+
+  function filtering() { return !!filterQ.trim() || filterV !== 'all'; }
+
+  function applyFilters() {
+    const req = $('#req');
+    if (!req) return;
+    const q = filterQ.trim().toLowerCase();
+    const byId = {};
+    lastCalc.groups.forEach(gr => gr.inds.forEach(x => { byId[x.ind.id] = x; }));
+    let any = false;
+    METHOD.groups.forEach(g => {
+      const gEl = $('.req-group[data-group="' + g.id + '"]', req);
+      let visible = 0;
+      g.indicators.forEach(ind => {
+        const el = $('.ind[data-ind="' + ind.id + '"]', gEl);
+        const x = byId[ind.id];
+        let ok = true;
+        if (q) {
+          const hay = (ind.id + ' ' + ind.code + ' ' + ind.title + ' ' + ind.items.join(' ') + ' ' + g.title).toLowerCase();
+          ok = hay.indexOf(q) !== -1;
+        }
+        if (ok && filterV !== 'all') {
+          const v = x.na ? 'na' : x.ok ? 'ok' : 'fail';
+          ok = v === filterV;
+        }
+        el.hidden = !ok;
+        if (ok) visible++;
+      });
+      gEl.hidden = visible === 0;
+      if (visible) any = true;
+      const open = filtering() ? true : !!state.ui.open[g.id];
+      gEl.classList.toggle('is-open', open);
+      const ex = $('.req-row--group .expander', gEl);
+      if (ex) ex.setAttribute('aria-expanded', String(open));
+    });
+    $('#req-empty').hidden = any;
+    const lbl = $('#verdict-label');
+    const o = VERDICTS.find(v => v.v === filterV);
+    if (lbl) lbl.textContent = filterV === 'all' ? 'Вердикт' : o.l;
+    const vb = $('[data-action="verdict-toggle"]');
+    if (vb) vb.classList.toggle('is-set', filterV !== 'all');
+    $$('#verdict-menu [data-v]').forEach(b => b.classList.toggle('is-on', b.dataset.v === filterV));
+    updateExpandAllLabel();
+  }
+
+  function allExpanded() {
+    return METHOD.groups.every(g => state.ui.open[g.id]) && INDS.every(i => state.ui.openInd[i.id]);
+  }
+  function updateExpandAllLabel() {
+    const b = $('#expand-all');
+    if (b) b.textContent = allExpanded() ? 'Свернуть всё' : 'Развернуть всё';
+  }
+
+  function toggleGroup(id) {
+    state.ui.open[id] = !state.ui.open[id];
+    save();
+    if (filtering()) { filterQ = ''; filterV = 'all'; const q = $('#q'); if (q) q.value = ''; }
+    applyFilters();
+  }
+
+  function setIndOpen(id, open) {
+    state.ui.openInd[id] = open;
+    const el = $('.ind[data-ind="' + id + '"]');
+    if (!el) return;
+    el.classList.toggle('is-open', open);
+    const ex = $('.ind-row .expander', el);
+    if (ex) ex.setAttribute('aria-expanded', String(open));
+  }
+
+  function toggleInd(id) {
+    setIndOpen(id, !state.ui.openInd[id]);
+    save();
+    updateExpandAllLabel();
+  }
+
+  function expandAll() {
+    const target = !allExpanded();
+    METHOD.groups.forEach(g => { state.ui.open[g.id] = target; });
+    INDS.forEach(i => setIndOpen(i.id, target));
+    save();
+    applyFilters();
+  }
+
+  function focusIndicator(id) {
+    const ind = IND_BY_ID[id];
+    if (!ind) return;
+    const gid = +id.split('.')[0];
+    state.ui.open[gid] = true;
+    setIndOpen(id, true);
+    save();
+    applyFilters();
+    history.replaceState(null, '', '#/assessment');
+    const el = $('.ind[data-ind="' + id + '"]');
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('is-flash');
+      setTimeout(() => el.classList.remove('is-flash'), 1800);
+    });
+  }
+
+  /* ---------- dashboard ---------- */
+  function scaleHtml(c) {
+    const p = Math.max(0, Math.min(100, c.kzi / 100));
+    return '<div class="scale" aria-hidden="true"><div class="scale__track">' +
+      '<div class="scale__zone scale__zone--red"></div><div class="scale__zone scale__zone--orange"></div><div class="scale__zone scale__zone--green"></div>' +
+      (c.touched ? '<div class="scale__marker" style="left:' + p + '%"></div>' : '') +
+      '</div><div class="scale__ticks"><span style="left:0">0</span><span style="left:75%">0,75</span><span style="left:100%">1</span></div></div>';
+  }
+
+  function barsHtml(c) {
+    return '<div class="bars">' +
+      '<div class="bars__y" aria-hidden="true"><span style="bottom:100%">100%</span><span style="bottom:75%">75%</span><span style="bottom:50%">50%</span><span style="bottom:25%">25%</span><span style="bottom:0">0%</span></div>' +
+      '<div class="bars__main">' +
+        '<div class="bars__plot">' + c.groups.map(gr => {
+          const p = Math.round(gr.score / gr.max * 100);
+          return '<div class="bars__col" title="' + esc(gr.g.title) + ': ' + fmt(gr.score) + ' из ' + fmt(gr.max) + '"><div class="bars__fill" style="height:' + p + '%"><b>' + p + '%</b></div></div>';
+        }).join('') + '</div>' +
+        '<div class="bars__labels">' + c.groups.map(gr => '<div><span class="lbl-full">' + esc(gr.g.title) + '</span><span class="lbl-short">Группа ' + gr.g.id + '</span><small>' + fmt(gr.score) + '<span class="lbl-full"> из ' + fmt(gr.max) + '</span></small></div>').join('') + '</div>' +
+      '</div></div>';
+  }
+
+  function viewDashboard(c) {
+    const pr = priorities(c);
+    const prRows = pr.map(x =>
+      '<tr class="is-link" data-action="goto-ind" data-ind="' + x.ind.id + '" tabindex="0">' +
+        '<td><span class="t-code">' + x.ind.id + '</span><span class="t-title">' + esc(x.ind.title) + '</span><span class="t-sub">' + esc(x.g.title) + '. Осталось мер: ' + (x.n - x.c) + ' из ' + x.n + '</span></td>' +
+        '<td class="num"><span class="gain">+' + fmt(x.max) + '</span></td>' +
+      '</tr>').join('');
+    const grTag = gr => (!c.touched ? '<span class="dash">-</span>' : gr.full ? '<span class="tag tag--sm tag--ok">Соответствует</span>' : '<span class="tag tag--sm tag--red">Не соответствует</span>');
+    const grRows = c.groups.map(gr =>
+      '<tr><td><span class="t-title">' + gr.g.id + '. ' + esc(gr.g.title) + '</span><span class="t-sub">R = ' + fmt(gr.g.R * 100) + ', выполнено ' + gr.met + ' из ' + gr.total + '</span><span class="show-sm">' + grTag(gr) + '</span></td>' +
+        '<td class="num">' + fmt(gr.score) + '<span class="t-sub">из ' + fmt(gr.max) + '</span></td>' +
+        '<td class="hide-sm">' + grTag(gr) + '</td></tr>').join('');
+    $('#main').innerHTML =
+      '<div class="page">' +
+        '<h1 class="sr-only">Дашборд</h1>' +
+        '<div class="grid grid--kpi">' +
+          '<div class="kpi kpi--active"><div class="kpi__label">Показатель защищённости Кзи</div><div class="kpi__value">' + (c.touched ? fmt(c.kzi) : '-') + '</div>' + scaleHtml(c) + '</div>' +
+          '<div class="kpi"><div class="kpi__label">Уровень защищённости</div><div class="kpi__value" style="color:' + (c.touched ? c.level.css : 'var(--muted-3)') + '">' + (c.touched ? c.level.name : '-') + '</div>' +
+            '<div class="kpi__note">' + (c.touched ? c.level.desc : 'Оценка ещё не начата') + '</div></div>' +
+          '<a class="kpi" href="#/assessment"><div class="kpi__label">Выполнено показателей</div><div class="kpi__value">' + c.met + ' <small>из ' + c.total + '</small></div>' +
+            '<div class="kpi__note">Отмечено мер: ' + c.checked + ' из ' + c.totalItems + '</div><span class="kpi__arrow">' + icon('arrowUpRight') + '</span></a>' +
+        '</div>' +
+        '<div class="grid grid--dash">' +
+          '<section class="card"><h2 class="card__title">Приоритизация несоответствий</h2>' +
+            (pr.length ? '<div class="table-wrap table-wrap--scroll"><table class="table"><thead><tr><th>Показатель</th><th class="num">Прирост Кзи</th></tr></thead><tbody>' + prRows + '</tbody></table></div>'
+              : '<div class="empty">Несоответствий нет. Минимальный базовый уровень обеспечен.</div>') +
+          '</section>' +
+          '<section class="card"><h2 class="card__title">Группы показателей</h2>' +
+            '<div class="table-wrap"><table class="table table--compact"><thead><tr><th>Наименование</th><th class="num">Итоговый балл</th><th class="hide-sm">Критичность</th></tr></thead><tbody>' + grRows + '</tbody></table></div>' +
+          '</section>' +
+        '</div>' +
+        '<section class="card"><h2 class="card__title">Распределение баллов по группам</h2>' + barsHtml(c) + '</section>' +
+      '</div>';
+  }
+
+  /* ---------- report ---------- */
+  function field(key, label, ph, required, wide, type) {
+    return '<div class="field' + (wide ? ' field--wide' : '') + '">' +
+      '<label class="field__label" for="f-' + key + '">' + label + (required ? ' <i>*</i>' : '') + '</label>' +
+      '<input class="input" id="f-' + key + '" data-form="' + key + '" type="' + (type || 'text') + '" placeholder="' + esc(ph) + '" value="' + esc(state.form[key]) + '" autocomplete="off"' + (required ? ' aria-required="true"' : '') + '>' +
+    '</div>';
+  }
+
+  function viewReport() {
+    const f = state.form;
+    const opts = '<option value="">Выберите территориальный орган</option>' +
+      FSTEC_BODIES.map(b => '<option value="' + b.id + '"' + (f.region === b.id ? ' selected' : '') + '>Управление по ' + esc(b.short) + ' (' + esc(b.city) + ')</option>').join('') +
+      '<option value="custom"' + (f.region === 'custom' ? ' selected' : '') + '>Другой адресат</option>';
+    $('#main').innerHTML =
+      '<div class="page"><section class="card">' +
+        '<nav class="breadcrumb" aria-label="Навигация"><a href="#/dashboard">Калькулятор Кзи</a><span>/</span><span>Отчёт</span></nav>' +
+        '<h1 class="page-title">Отчёт во ФСТЭК России</h1>' +
+        '<p class="page-sub">Заполните реквизиты. Отчёт выгружается в формате Word, его нужно перенести на бланк организации и подписать.</p>' +
+        '<div class="grid grid--report" style="margin-top:30px">' +
+          '<div>' +
+            '<h2 class="card__title card__title--sm">Реквизиты организации</h2>' +
+            '<div class="form">' +
+              field('org', 'Название организации', 'ООО «Ромашка»', true, true) +
+              field('post', 'Должность руководителя', 'Директор', true) +
+              field('head', 'И.О. Фамилия руководителя', 'И.И. Иванов', true) +
+              field('executor', 'И.О. Фамилия исполнителя', 'П.П. Петров', true) +
+              field('phone', 'Номер телефона исполнителя', '+7 (123) 456-78-90', true, false, 'tel') +
+              field('email', 'Адрес электронной почты', 'info@example.ru', true, true, 'email') +
+            '</div>' +
+            '<h2 class="card__title card__title--sm" style="margin-top:34px">Адресат</h2>' +
+            '<div class="form">' +
+              '<div class="field field--wide"><label class="field__label" for="f-region">Территориальный орган ФСТЭК России</label>' +
+                '<select class="native-select" id="f-region">' + opts + '</select>' +
+                '<span class="field__hint">ФИО руководителей подставлены по данным ЕГРЮЛ. Перед отправкой сверьте их на сайте ФСТЭК России.</span></div>' +
+              field('addrLine1', 'Должность адресата (кому)', 'Руководителю', true) +
+              field('addrName', 'И.О. Фамилия адресата (кому)', 'И.И. Иванову', false) +
+              field('addrLine2', 'Организация адресата (кого)', 'Управления ФСТЭК России по УФО', true, true) +
+            '</div>' +
+            '<div class="form__actions">' +
+              '<button class="btn btn--dark" type="button" data-action="gen-letter">' + icon('download') + 'Сформировать отчёт</button>' +
+              '<button class="btn btn--outline" type="button" data-action="gen-current">' + icon('download') + 'Текущий отчёт</button>' +
+            '</div>' +
+            '<ul class="form__note">' +
+              '<li>«Сформировать отчёт» выгружает письмо во ФСТЭК России с приложением расчёта</li>' +
+              '<li>«Текущий отчёт» выгружает внутренний отчёт с несоответствиями и заметками</li>' +
+            '</ul>' +
+            '<div class="notice" style="margin-top:20px">' + icon('info') + '<div>Результаты расчёта направляются во ФСТЭК России не позднее 5 рабочих дней после дня расчёта (пункт 32 Требований, утверждённых приказом ФСТЭК России № 117).</div></div>' +
+          '</div>' +
+          '<div class="paper-wrap">' +
+            '<div class="paper-tabs"><div class="seg" role="tablist" aria-label="Предпросмотр">' +
+              '<button type="button" role="tab" data-action="preview" data-mode="letter">Письмо</button>' +
+              '<button type="button" role="tab" data-action="preview" data-mode="current">Текущий отчёт</button>' +
+            '</div></div>' +
+            '<div class="paper" id="paper" aria-live="polite"></div>' +
+          '</div>' +
+        '</div>' +
+      '</section></div>';
+    updatePreview();
+  }
+
+  function updatePreview() {
+    const p = $('#paper');
+    if (!p) return;
+    const mode = state.ui.preview;
+    $$('.seg [data-mode]').forEach(b => {
+      const on = b.dataset.mode === mode;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-selected', String(on));
+    });
+    const opts = { preview: true, fmt, date: today(), priorities: priorities(lastCalc) };
+    p.innerHTML = mode === 'current'
+      ? Report.currentBody(lastCalc, state, opts)
+      : Report.letterBody(lastCalc, state.form, opts) + '<div class="paper__sep">Приложение на следующей странице документа</div>' + Report.appendix(lastCalc, state.form, opts);
+  }
+
+  function applyRegion(id) {
+    const f = state.form;
+    f.region = id;
+    const b = FSTEC_BODIES.find(x => x.id === id);
+    if (b) {
+      f.addrLine1 = 'Руководителю';
+      f.addrLine2 = 'Управления ФСТЭК России по ' + b.short;
+      f.addrName = b.head;
+    } else if (id === 'custom') {
+      f.addrLine1 = '';
+      f.addrLine2 = '';
+      f.addrName = '';
+    }
+    ['addrLine1', 'addrLine2', 'addrName'].forEach(k => {
+      const el = $('#f-' + k);
+      if (el) { el.value = f[k]; el.classList.remove('is-error'); }
+    });
+    save();
+    updatePreview();
+    if (id === 'custom') { const el = $('#f-addrLine1'); if (el) el.focus(); }
+  }
+
+  const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function validateLetter() {
+    const f = state.form;
+    const bad = [];
+    ['org', 'post', 'head', 'executor', 'phone', 'email', 'addrLine1', 'addrLine2'].forEach(k => { if (!String(f[k]).trim()) bad.push(k); });
+    if (f.email.trim() && !EMAIL_RE.test(f.email.trim())) bad.push('email');
+    if (f.phone.trim() && f.phone.replace(/\D/g, '').length < 6) bad.push('phone');
+    $$('[data-form]').forEach(el => el.classList.toggle('is-error', bad.indexOf(el.dataset.form) !== -1));
+    if (bad.length) {
+      const first = $('#f-' + bad[0]);
+      if (first) first.focus();
+      toast('Заполните все поля формы корректно (включая email)');
+      return false;
+    }
+    return true;
+  }
+
+  function genLetter() {
+    if (!validateLetter()) return;
+    const html = Report.letterDoc(lastCalc, state.form, { fmt, date: today() });
+    Report.download('KZI_report_' + isoDate() + '.doc', html);
+    toast('Отчёт сформирован');
+  }
+
+  function genCurrent() {
+    const html = Report.currentDoc(lastCalc, state, { fmt, date: today(), priorities: priorities(lastCalc) });
+    Report.download('Current_KZI_report_' + isoDate() + '.doc', html);
+    toast('Текущий отчёт сформирован');
+  }
+
+  /* ---------- method ---------- */
+  function viewMethod() {
+    const levels = [
+      { l: LEVELS.base, range: 'Кзи = 1' },
+      { l: LEVELS.low, range: '0,75 < Кзи < 1' },
+      { l: LEVELS.crit, range: 'Кзи ≤ 0,75' }
+    ];
+    const weights = METHOD.groups.map(g =>
+      '<tr><td><span class="t-title">' + g.id + '. ' + esc(g.fullTitle || g.title) + '</span></td><td class="num">' + fmt(g.R * 100) + '</td>' +
+      '<td>' + g.indicators.map(i => i.code + ' = ' + fmt(i.k * 100)).join('<br>') + '</td></tr>').join('');
+    $('#main').innerHTML =
+      '<div class="page"><section class="card">' +
+        '<nav class="breadcrumb" aria-label="Навигация"><a href="#/dashboard">Калькулятор Кзи</a><span>/</span><span>Методика</span></nav>' +
+        '<h1 class="page-title">Методика расчёта</h1>' +
+        '<div class="prose" style="margin-top:26px">' +
+          '<h3>Кому необходимо рассчитывать Кзи</h3>' +
+          '<p>Оценку показателя защищённости проводят операторы ГИС, ИСПДн и иных информационных систем, которые являются государственными и муниципальными организациями, а также субъекты КИИ.</p>' +
+          '<p>Требования к подрядчикам входят в сам показатель (k13). Поэтому заказчики из этих категорий закрепляют меры защиты в договорах с подрядчиками, которые получают привилегированный доступ к их информационным системам.</p>' +
+          '<h3>Зачем рассчитывать Кзи</h3>' +
+          '<p>Подпункт «а» пункта 31 Требований, утверждённых приказом ФСТЭК России от 11.04.2025 № 117, обязывает оператора (обладателя информации) оценивать показатель, который характеризует текущее состояние защиты информации от базового уровня угроз безопасности информации (показатель защищённости Кзи).</p>' +
+          '<p>Расчёт ведётся по <a href="' + CONFIG.methodUrl + '" target="_blank" rel="noopener">Методике оценки показателя состояния технической защиты информации</a>, утверждённой ФСТЭК России 11.11.2025.</p>' +
+          '<h3>Как рассчитывается Кзи</h3>' +
+          '<div class="formula">Кзи = (k11 + k12 + k13)·R1 + (k21 + k22 + k23 + k24)·R2 + (k31 + … + k36)·R3 + (k41 + k42 + k43)·R4</div>' +
+          '<ul>' +
+            '<li>Rj: весовой коэффициент группы показателей</li>' +
+            '<li>kji: частный показатель безопасности. Он принимает значение из Методики, если мера реализована в полном объёме, и 0, если мера не реализована или реализована не полностью</li>' +
+            '<li>Показателям k13, k22, k31, k34 и k36 Методика присваивает максимальное значение, если мера неприменима: например, подрядчики не привлекаются или электронная почта не используется</li>' +
+            '<li>Максимальное значение Кзи равно 1</li>' +
+          '</ul>' +
+          '<h3>Уровни защищённости</h3>' +
+          '<div class="levels">' + levels.map(x => '<div class="level-row"><div class="level-row__range">' + x.range + '</div><div><span class="tag tag--' + x.l.tag + '">' + x.l.name + ' («' + x.l.color + '»)</span></div><div class="level-row__desc">' + x.l.desc + '</div></div>').join('') + '</div>' +
+          '<h3>Весовые коэффициенты</h3>' +
+          '<div class="table-wrap"><table class="table"><thead><tr><th>Группа показателей</th><th class="num">R</th><th>Частные показатели k</th></tr></thead><tbody>' + weights + '</tbody></table></div>' +
+          '<h3>Полезная информация</h3>' +
+          '<ul>' +
+            '<li>Если Кзи соответствует низкому («оранжевый») или критическому («красный») уровню, разрабатывается план мероприятий по достижению следующего уровня защиты. Срок мероприятий не должен превышать срок до следующей плановой оценки (пункт 37 Методики).</li>' +
+            '<li>Кзи рассчитывается не реже одного раза в шесть месяцев (пункт 12 Методики).</li>' +
+            '<li>Результаты расчёта направляются во ФСТЭК России не позднее 5 рабочих дней после дня расчёта (пункт 32 Требований).</li>' +
+            '<li>Если при очередном расчёте в течение 12 месяцев повторно фиксируется невыполнение мер одного и того же показателя, весовой коэффициент всей группы обнуляется (пункт 35 Методики).</li>' +
+            '<li>ФСТЭК России может запросить документы и материалы, которые подтверждают расчёт. Если их не представить в течение 30 дней, соответствующим показателям присваивается значение 0 (пункты 16 и 17 Методики).</li>' +
+          '</ul>' +
+        '</div>' +
+      '</section></div>';
+  }
+
+  /* ---------- service ---------- */
+  function leadField(key, label, ph, type, required) {
+    const v = state.lead[key] || (key === 'org' ? state.form.org : '');
+    return '<div class="field"><label class="field__label" for="l-' + key + '">' + label + (required ? ' <i>*</i>' : '') + '</label>' +
+      (type === 'textarea'
+        ? '<textarea class="textarea" id="l-' + key + '" data-lead="' + key + '" placeholder="' + esc(ph) + '" rows="3">' + esc(v) + '</textarea>'
+        : '<input class="input" id="l-' + key + '" data-lead="' + key + '" type="' + (type || 'text') + '" placeholder="' + esc(ph) + '" value="' + esc(v) + '" autocomplete="off">') +
+      '</div>';
+  }
+
+  function viewService(c) {
+    const pr = priorities(c);
+    const shown = pr.slice(0, 8);
+    const rest = pr.length - shown.length;
+    let status;
+    if (!c.touched) status = '<div class="notice notice--gray">' + icon('info') + '<div>Оценка ещё не проведена. Отметьте выполненные меры в разделе <a href="#/assessment">«Оценка»</a>, и здесь появится список несоответствий.</div></div>';
+    else if (!pr.length) status = '<div class="notice">' + icon('info') + '<div>Все показатели выполнены, Кзи = 1. Минимальный базовый уровень защищённости обеспечен.</div></div>';
+    else status = '<p class="prose" style="margin:0 0 14px">Текущий Кзи ' + fmt(c.kzi) + ', уровень «' + c.level.name.toLowerCase() + '». До минимального базового уровня не хватает ' + fmt(10000 - c.kzi) + ', для этого нужно закрыть ' + pr.length + ' ' + plural(pr.length, 'показатель', 'показателя', 'показателей') + '.</p>';
+    $('#main').innerHTML =
+      '<div class="page"><section class="card">' +
+        '<nav class="breadcrumb" aria-label="Навигация"><a href="#/dashboard">Калькулятор Кзи</a><span>/</span><span>Экспресс-повышение</span></nav>' +
+        '<h1 class="page-title">Экспресс-повышение уровня защищённости</h1>' +
+        '<p class="page-sub">УЦСБ помогает закрыть несоответствия по Методике ФСТЭК России и выйти на минимальный базовый уровень защищённости (Кзи = 1).</p>' +
+        '<div class="service-hero" style="margin-top:30px">' +
+          '<div>' +
+            '<h2 class="card__title card__title--sm">Что сейчас не выполнено</h2>' + status +
+            (c.touched && shown.length ? '<div class="gaps">' + shown.map(x => '<a class="gap" href="#/assessment/' + x.ind.id + '"><span class="gap__code">' + x.ind.id + '</span><span class="gap__title">' + esc(x.ind.title) + '</span><span class="gain">+' + fmt(x.max) + '</span></a>').join('') + '</div>' +
+              (rest > 0 ? '<p class="form__note">И ещё ' + rest + ' ' + plural(rest, 'показатель', 'показателя', 'показателей') + ' в разделе <a href="#/dashboard">«Дашборд»</a>.</p>' : '') : '') +
+            '<h2 class="card__title card__title--sm" style="margin-top:34px">С чем помогаем</h2>' +
+            '<ul class="prose">' +
+              '<li><b>Организационные меры:</b> назначение ответственных, положения и регламенты, требования к подрядчикам, порядок реагирования на инциденты</li>' +
+              '<li><b>Защита пользователей:</b> парольная политика, многофакторная аутентификация, контроль учётных записей</li>' +
+              '<li><b>Защита информационных систем:</b> межсетевое экранирование периметра, управление уязвимостями, антивирусная защита, защита от DDoS-атак</li>' +
+              '<li><b>Мониторинг:</b> централизованный сбор и анализ событий безопасности</li>' +
+            '</ul>' +
+          '</div>' +
+          '<div class="lead-card">' +
+            '<h2 class="card__title card__title--sm">Оставить заявку</h2>' +
+            '<div class="form form--one">' +
+              leadField('name', 'Контактное лицо', 'Иван Иванов', 'text', true) +
+              leadField('org', 'Организация', 'ООО «Ромашка»', 'text', false) +
+              leadField('phone', 'Телефон', '+7 (123) 456-78-90', 'tel', false) +
+              leadField('email', 'Электронная почта', 'info@example.ru', 'email', false) +
+              leadField('comment', 'Комментарий', 'Например, срок, к которому нужно выйти на Кзи = 1', 'textarea', false) +
+              '<label class="check"><input type="checkbox" data-lead="consent"' + (state.lead.consent ? ' checked' : '') + '><span class="check__box">' + TICK + '</span><span class="check__text">Согласен на обработку персональных данных для связи по заявке</span></label>' +
+            '</div>' +
+            '<div class="form__actions form__actions--stack">' +
+              '<button class="btn btn--dark btn--block" type="button" data-action="lead-send">' + icon('send') + 'Отправить заявку</button>' +
+              '<button class="btn btn--outline btn--block" type="button" data-action="lead-copy">' + icon('copy') + 'Скопировать текст заявки</button>' +
+            '</div>' +
+            '<p class="form__note">Заявка откроется в почтовой программе. Результат расчёта и список несоответствий добавятся в текст сами.</p>' +
+            '<div class="contacts">' +
+              '<a class="contact" href="tel:' + CONFIG.contactPhoneHref + '"><span class="ic">' + icon('phone') + '</span>' + esc(CONFIG.contactPhone) + '</a>' +
+              '<a class="contact" href="mailto:' + CONFIG.contactEmail + '"><span class="ic">' + icon('mail') + '</span>' + esc(CONFIG.contactEmail) + '</a>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</section></div>';
+  }
+
+  function leadText(c) {
+    const L = state.lead;
+    const pr = priorities(c);
+    const org = (L.org || state.form.org || '').trim();
+    const lines = [
+      'Заявка на экспресс-повышение уровня защищённости',
+      '',
+      'Организация: ' + (org || 'не указана'),
+      'Контактное лицо: ' + (L.name.trim() || 'не указано'),
+      'Телефон: ' + (L.phone.trim() || 'не указан'),
+      'Электронная почта: ' + (L.email.trim() || 'не указана'),
+      '',
+      'Результат расчёта: ' + (c.touched ? 'Кзи = ' + fmt(c.kzi) + ', уровень «' + c.level.name.toLowerCase() + '»' : 'не рассчитан'),
+      'Выполнено показателей: ' + c.met + ' из ' + c.total
+    ];
+    if (c.touched && pr.length) {
+      lines.push('', 'Невыполненные показатели:');
+      pr.forEach(x => lines.push(x.ind.id + ' ' + x.ind.title));
+    }
+    if (L.comment.trim()) lines.push('', 'Комментарий: ' + L.comment.trim());
+    return lines.join('\n');
+  }
+
+  function validateLead() {
+    const L = state.lead;
+    const bad = [];
+    if (!L.name.trim()) bad.push('name');
+    if (!L.phone.trim() && !L.email.trim()) { bad.push('phone'); bad.push('email'); }
+    if (L.email.trim() && !EMAIL_RE.test(L.email.trim())) bad.push('email');
+    $$('[data-lead]').forEach(el => { if (el.type !== 'checkbox') el.classList.toggle('is-error', bad.indexOf(el.dataset.lead) !== -1); });
+    if (bad.length) {
+      const first = $('#l-' + bad[0]);
+      if (first) first.focus();
+      toast('Укажите контактное лицо и телефон или почту');
+      return false;
+    }
+    if (!L.consent) { toast('Отметьте согласие на обработку персональных данных'); return false; }
+    return true;
+  }
+
+  function sendLead() {
+    if (!validateLead()) return;
+    const c = lastCalc;
+    if (CONFIG.leadEndpoint) {
+      fetch(CONFIG.leadEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: leadText(c), kzi: c.touched ? fmt(c.kzi) : null, level: c.touched ? c.level.name : null, lead: state.lead })
+      }).then(r => { toast(r.ok ? 'Заявка отправлена' : 'Не удалось отправить заявку, попробуйте почту'); })
+        .catch(() => toast('Не удалось отправить заявку, попробуйте почту'));
+      return;
+    }
+    const org = (state.lead.org || state.form.org || '').trim();
+    const subject = 'Заявка: экспресс-повышение уровня защищённости' + (org ? ', ' + org : '');
+    let body = leadText(c);
+    if (body.length > 1700) body = body.slice(0, 1700) + '\n...';
+    window.location.href = 'mailto:' + CONFIG.contactEmail + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    toast('Открываем почтовую программу');
+  }
+
+  function copyText(text) {
+    const done = () => toast('Текст заявки скопирован');
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done, () => fallback());
+    } else fallback();
+    function fallback() {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch (e) { toast('Не удалось скопировать текст'); }
+      ta.remove();
+    }
+  }
+
+  /* ---------- modal, toast ---------- */
+  let modalCb = null;
+  let modalReturn = null;
+  function openModal(title, text, confirmLabel, onConfirm) {
+    let m = $('#modal');
+    if (!m) { m = document.createElement('div'); m.id = 'modal'; document.body.appendChild(m); }
+    modalReturn = document.activeElement;
+    m.className = 'modal';
+    m.hidden = false;
+    m.setAttribute('data-action', 'modal-backdrop');
+    m.innerHTML = '<div class="modal__box" role="dialog" aria-modal="true" aria-labelledby="modal-t"><h2 class="modal__title" id="modal-t">' + title + '</h2><p class="modal__text">' + text + '</p>' +
+      '<div class="modal__actions"><button class="btn btn--outline btn--sm" type="button" data-action="modal-close">Отмена</button><button class="btn btn--dark btn--sm" type="button" data-action="modal-confirm">' + confirmLabel + '</button></div></div>';
+    modalCb = onConfirm;
+    $('[data-action="modal-confirm"]', m).focus();
+  }
+  function closeModal() {
+    const m = $('#modal');
+    if (m) m.hidden = true;
+    modalCb = null;
+    if (modalReturn && modalReturn.focus) modalReturn.focus();
+  }
+
+  let toastTimer = 0;
+  function toast(msg) {
+    let t = $('#toast');
+    if (!t) {
+      t = document.createElement('div');
+      t.id = 'toast';
+      t.className = 'toast';
+      t.setAttribute('role', 'status');
+      t.setAttribute('aria-live', 'polite');
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.hidden = true; }, 3200);
+  }
+
+  function closeMenus() {
+    const m = $('#verdict-menu');
+    if (m && !m.hidden) {
+      m.hidden = true;
+      const b = $('[data-action="verdict-toggle"]');
+      if (b) b.setAttribute('aria-expanded', 'false');
+    }
+  }
+
+  function resetAnswers() {
+    openModal('Сбросить ответы?', 'Отметки мер, признаки «Не применимо» и заметки будут удалены. Реквизиты для отчёта сохранятся.', 'Сбросить', () => {
+      const d = defaultState();
+      state.items = d.items;
+      state.na = d.na;
+      state.notes = d.notes;
+      save();
+      lastCalc = calc();
+      renderChip(lastCalc);
+      if (current && current !== 'start') VIEWS[current](lastCalc, '');
+      toast('Ответы сброшены');
+    });
+  }
+
+  /* ---------- events ---------- */
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-action]');
+    if (!e.target.closest('.select')) closeMenus();
+    if (!a) return;
+    const act = a.dataset.action;
+    switch (act) {
+      case 'toggle-group':
+        if (e.target.closest('input, textarea, a')) return;
+        toggleGroup(+a.dataset.group);
+        break;
+      case 'toggle-ind':
+        if (e.target.closest('input, textarea, a, label')) return;
+        toggleInd(a.dataset.ind);
+        break;
+      case 'verdict-toggle': {
+        const m = $('#verdict-menu');
+        m.hidden = !m.hidden;
+        a.setAttribute('aria-expanded', String(!m.hidden));
+        break;
+      }
+      case 'verdict-set':
+        filterV = a.dataset.v;
+        closeMenus();
+        applyFilters();
+        break;
+      case 'expand-all':
+        expandAll();
+        break;
+      case 'reset':
+        resetAnswers();
+        break;
+      case 'collapse':
+        state.ui.collapsed = !state.ui.collapsed;
+        $('#app').classList.toggle('is-collapsed', state.ui.collapsed);
+        a.setAttribute('aria-label', state.ui.collapsed ? 'Развернуть меню' : 'Свернуть меню');
+        save();
+        break;
+      case 'menu':
+        $('#app').classList.toggle('is-menu');
+        break;
+      case 'menu-close':
+        $('#app').classList.remove('is-menu');
+        break;
+      case 'start':
+        state.ui.seenStart = true;
+        save();
+        location.hash = '#/assessment';
+        break;
+      case 'gen-letter':
+        genLetter();
+        break;
+      case 'gen-current':
+        genCurrent();
+        break;
+      case 'preview':
+        state.ui.preview = a.dataset.mode === 'current' ? 'current' : 'letter';
+        save();
+        updatePreview();
+        break;
+      case 'goto-ind':
+        location.hash = '#/assessment/' + a.dataset.ind;
+        break;
+      case 'lead-send':
+        sendLead();
+        break;
+      case 'lead-copy':
+        copyText(leadText(lastCalc));
+        break;
+      case 'modal-close':
+        closeModal();
+        break;
+      case 'modal-backdrop':
+        if (e.target === a) closeModal();
+        break;
+      case 'modal-confirm': {
+        const cb = modalCb;
+        closeModal();
+        if (cb) cb();
+        break;
+      }
+      default:
+        break;
+    }
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeMenus();
+      const m = $('#modal');
+      if (m && !m.hidden) closeModal();
+      const app = $('#app');
+      if (app) app.classList.remove('is-menu');
+    }
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('tr[data-action="goto-ind"]')) {
+      e.preventDefault();
+      location.hash = '#/assessment/' + e.target.dataset.ind;
+    }
+  });
+
+  document.addEventListener('change', e => {
+    const t = e.target;
+    if (t.matches('input[data-item]')) {
+      state.items[t.dataset.item][+t.dataset.i] = t.checked;
+      afterChange();
+    } else if (t.matches('input[data-all]')) {
+      const id = t.dataset.all;
+      state.items[id] = state.items[id].map(() => t.checked);
+      afterChange();
+    } else if (t.matches('input[data-na]')) {
+      state.na[t.dataset.na] = t.checked;
+      afterChange();
+    } else if (t.matches('#f-region')) {
+      applyRegion(t.value);
+    } else if (t.matches('input[data-lead="consent"]')) {
+      state.lead.consent = t.checked;
+      save();
+    }
+  });
+
+  document.addEventListener('input', e => {
+    const t = e.target;
+    if (t.matches('textarea[data-note]')) {
+      state.notes[t.dataset.note] = t.value;
+      save();
+    } else if (t.matches('#q')) {
+      filterQ = t.value;
+      applyFilters();
+    } else if (t.matches('[data-form]')) {
+      state.form[t.dataset.form] = t.value;
+      t.classList.remove('is-error');
+      save();
+      updatePreview();
+    } else if (t.matches('[data-lead]') && t.type !== 'checkbox') {
+      state.lead[t.dataset.lead] = t.value;
+      t.classList.remove('is-error');
+      save();
+    }
+  });
+
+  /* синхронизация между вкладками */
+  window.addEventListener('storage', e => {
+    if (e.key !== CONFIG.storageKey || !e.newValue) return;
+    try { state = normalize(JSON.parse(e.newValue)); } catch (err) { return; }
+    route();
+  });
+
+  window.addEventListener('hashchange', route);
+  route();
+})();
+
+</script>
+</body>
+</html>
