@@ -215,7 +215,7 @@ svg { display: block; }
 .grid { display: grid; gap: 14px; }
 .grid--kpi { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .grid--2 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
-.grid--dash { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: start; }
+.grid--dash { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
 .grid--dash > .card { padding: 32px 30px 34px; }
 .table--compact th, .table--compact td { padding-left: 12px; padding-right: 12px; }
 .table--compact th { white-space: normal; }
@@ -657,10 +657,10 @@ p.form__note { padding-left: 0; }
 }
 .frame__tab { display: flex; height: 76px; }
 .frame__tab-l { flex: 0 0 56%; background: #fff; border-radius: 32px 0 0 0; display: flex; align-items: flex-end; padding: 0 0 4px 40px; }
-.frame__tab-s { flex: 0 0 64px; height: 100%; }
+.frame__tab-s { flex: 0 0 64px; height: 100%; margin: 0 -1px; position: relative; z-index: 1; }
 .frame__tab-s svg { width: 100%; height: 100%; }
 .frame__tab-r { flex: 1 1 auto; margin-top: 44px; background: #fff; border-radius: 0 32px 0 0; }
-.frame__card { background: #fff; border-radius: 0 0 32px 32px; padding: 6px 40px 42px; position: relative; }
+.frame__card { background: #fff; border-radius: 0 0 32px 32px; padding: 6px 40px 42px; position: relative; margin-top: -1px; }
 .frame__logo { height: 34px; }
 .frame__logo svg { height: 34px; width: auto; }
 .frame h1 { margin: 22px 0 14px; font-size: 30px; line-height: 1.2; font-weight: 600; color: var(--text-2); }
@@ -687,9 +687,11 @@ p.form__note { padding-left: 0; }
 .backdrop { display: none; }
 
 /* ===== Responsive ===== */
+@media (max-width: 1400px) {
+  .grid--dash { grid-template-columns: minmax(0, 1fr); }
+}
 @media (max-width: 1360px) {
   .summary { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .grid--dash { grid-template-columns: minmax(0, 1fr); }
   .grid--report { grid-template-columns: minmax(0, 1fr); }
   .paper-wrap { position: static; }
   .paper { max-height: none; }
@@ -733,6 +735,7 @@ p.form__note { padding-left: 0; }
 @media (max-width: 760px) {
   .kzi-chip__label { display: none; }
   .kzi-chip { padding: 0 6px 0 12px; gap: 8px; height: 40px; }
+  .kzi-chip__value { font-size: 15px; }
   .kzi-chip .tag { display: none; }
   .kzi-chip__dot { display: block; }
   .icon-btn { width: 40px; height: 40px; }
@@ -1422,9 +1425,9 @@ const Report = (function () {
     { id: 'report', label: 'Отчёт', icon: 'file' },
     { sep: true },
     { id: 'method', label: 'Методика', icon: 'book' },
-    { id: 'service', label: 'Экспресс-повышение', icon: 'shield' }
+    { id: 'service', label: 'Повышение Кзи', icon: 'shield' }
   ];
-  const TITLES = { dashboard: 'Дашборд', assessment: 'Оценка', report: 'Отчёт', method: 'Методика', service: 'Экспресс-повышение' };
+  const TITLES = { dashboard: 'Дашборд', assessment: 'Оценка', report: 'Отчёт', method: 'Методика', service: 'Повышение Кзи' };
 
   function renderShell() {
     root.innerHTML =
@@ -1635,10 +1638,10 @@ const Report = (function () {
     return '' +
       '<div class="summary__item"><div class="summary__label">Организация</div><div class="summary__value">' + (org ? esc(org) : '<a href="#/report">Указать</a>') + '</div></div>' +
       '<div class="summary__item"><div class="summary__label">Статус</div><div class="summary__value"><span class="tag tag--' + st[1] + '">' + st[0] + '</span></div></div>' +
-      '<div class="summary__item"><div class="summary__label">Результат (Кзи)</div><div class="summary__value summary__value--kzi">' + (c.touched ? fmt(c.kzi) : '<span class="dash">-</span>') + '</div></div>' +
+      '<div class="summary__item"><div class="summary__label">Кзи</div><div class="summary__value summary__value--kzi">' + (c.touched ? fmt(c.kzi) : '<span class="dash">-</span>') + '</div></div>' +
       '<div class="summary__item"><div class="summary__label">Уровень</div><div class="summary__value">' + (c.touched ? '<span class="tag tag--' + c.level.tag + '">' + c.level.name + '</span>' : '<span class="dash">-</span>') + '</div></div>' +
       '<div class="summary__item"><div class="summary__label">Дата расчёта</div><div class="summary__value">' + today() + '</div></div>' +
-      '<div class="summary__item summary__item--wide"><div class="summary__label">Выполнено показателей</div>' +
+      '<div class="summary__item summary__item--wide"><div class="summary__label">Показатели</div>' +
         '<div class="progress"><div class="progress__track"><div class="progress__bar" style="width:' + pct + '%"></div></div><span class="progress__text">' + c.met + ' из ' + c.total + '</span></div></div>';
   }
 
@@ -2032,7 +2035,7 @@ const Report = (function () {
     else status = '<p class="prose" style="margin:0 0 14px">Текущий Кзи ' + fmt(c.kzi) + ', уровень «' + c.level.name.toLowerCase() + '». До минимального базового уровня не хватает ' + fmt(10000 - c.kzi) + ', для этого нужно закрыть ' + pr.length + ' ' + plural(pr.length, 'показатель', 'показателя', 'показателей') + '.</p>';
     $('#main').innerHTML =
       '<div class="page"><section class="card">' +
-        '<nav class="breadcrumb" aria-label="Навигация"><a href="#/dashboard">Калькулятор Кзи</a><span>/</span><span>Экспресс-повышение</span></nav>' +
+        '<nav class="breadcrumb" aria-label="Навигация"><a href="#/dashboard">Калькулятор Кзи</a><span>/</span><span>Повышение Кзи</span></nav>' +
         '<h1 class="page-title">Экспресс-повышение уровня защищённости</h1>' +
         '<p class="page-sub">УЦСБ помогает закрыть несоответствия по Методике ФСТЭК России и выйти на минимальный базовый уровень защищённости (Кзи = 1).</p>' +
         '<div class="service-hero" style="margin-top:30px">' +
