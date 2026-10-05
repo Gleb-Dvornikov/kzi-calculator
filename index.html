@@ -81,7 +81,7 @@ svg { display: block; }
 
 .layout {
   max-width: 1480px; margin: 0 auto; padding: 0 24px;
-  display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; align-items: start;
+  display: grid; grid-template-columns: minmax(0, 1fr) 372px; gap: 16px; align-items: start;
 }
 .main { min-width: 0; background: var(--card); border-radius: 28px; padding: 36px 40px 40px; }
 .title { margin: 0; font-size: 32px; line-height: 1.2; font-weight: 600; color: var(--text); letter-spacing: -.01em; overflow-wrap: anywhere; }
@@ -96,6 +96,18 @@ svg { display: block; }
 .info ol, .info ul { margin: 0; padding-left: 22px; font-size: 15px; color: var(--text-3); }
 .info li + li { margin-top: 6px; }
 .info a { color: var(--brand-ui); }
+.info--toggle { padding: 0; }
+.info__toggle {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  padding: 18px 24px; border: 0; background: none; text-align: left;
+}
+.info__title { flex: 1 1 auto; min-width: 0; font-size: 17px; line-height: 1.35; font-weight: 600; color: var(--text); }
+.info__hint { flex: none; font-size: 14px; color: var(--muted-2); }
+.info__toggle:hover .info__hint { color: var(--brand-ui); }
+.info__toggle:hover .expander { border-color: var(--brand-ui); }
+.info__body { padding: 0 28px 24px 58px; }
+.info--toggle:not(.is-open) .info__body { display: none; }
+.info--toggle.is-open .expander::after { transform: translate(-50%, -50%) rotate(90deg) scaleX(0); }
 
 /* ===== Form ===== */
 .block { margin-top: 36px; }
@@ -204,11 +216,12 @@ svg { display: block; }
 /* ===== Right panel ===== */
 .panel { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 12px; max-height: calc(100vh - 32px); overflow-y: auto; scrollbar-width: none; }
 .panel::-webkit-scrollbar { display: none; }
-.panel__card { background: var(--card); border-radius: 28px; padding: 28px 26px 26px; }
-.panel__label { font-size: 16px; line-height: 1.35; color: var(--muted); }
-.panel__value { margin-top: 6px; font-size: 44px; line-height: 1.1; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
-.panel__status { margin-top: 10px; min-height: 28px; }
-.meter { margin-top: 22px; }
+.panel__card { background: var(--card); border-radius: 28px; padding: 24px 24px 20px; }
+.panel__label { font-size: 15px; line-height: 1.35; color: var(--muted); }
+.panel__result { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 4px; }
+.panel__value { font-size: 42px; line-height: 1.1; font-weight: 700; color: var(--text); font-variant-numeric: tabular-nums; }
+.panel__status { min-height: 28px; display: flex; align-items: center; }
+.meter { margin-top: 16px; }
 .meter__track { position: relative; height: 10px; border-radius: 99px; background: var(--row); }
 .meter__fill { height: 100%; width: 0; border-radius: 99px; background: var(--zone-red); transition: width .35s ease, background-color .35s ease; }
 .meter__fill--low { background: var(--zone-orange); }
@@ -219,16 +232,18 @@ svg { display: block; }
 .meter__labels span:nth-child(1) { left: 0; }
 .meter__labels span:nth-child(2) { left: 75%; transform: translateX(-50%); }
 .meter__labels span:nth-child(3) { right: 0; }
-.panel__groups { list-style: none; margin: 20px 0 0; padding: 0; border-top: 1px solid var(--row); }
-.panel__groups li { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--row); font-size: 14px; line-height: 1.35; color: var(--text-3); }
+.panel__groups { list-style: none; margin: 16px 0 0; padding: 0; border-top: 1px solid var(--row); }
+.panel__groups li { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--row); font-size: 13.5px; line-height: 1.35; color: var(--text-3); }
 .panel__groups b { flex: none; font-weight: 600; color: var(--text); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.panel__actions { display: flex; flex-direction: column; gap: 10px; margin-top: 22px; }
+.panel__actions { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+.panel .btn { height: 46px; }
 .panel__msg { margin: 12px 0 0; font-size: 14px; line-height: 1.4; }
 .panel__msg.is-error { color: var(--red); }
 .panel__msg.is-ok { color: var(--green); }
 .panel__msg button { border: 0; background: none; padding: 0; margin-left: 6px; color: var(--brand-ui); font-weight: 600; text-decoration: underline; }
-.panel__contact { background: var(--card); border-radius: 20px; padding: 18px 22px; text-align: center; font-size: 14px; color: var(--muted); }
-.panel__contact a { display: block; margin-top: 4px; font-size: 15px; font-weight: 600; color: var(--text-2); text-decoration: none; }
+.panel__contact { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--row); font-size: 13px; line-height: 1.45; color: var(--muted); }
+.panel__links { display: flex; flex-wrap: wrap; gap: 2px 18px; margin-top: 6px; }
+.panel__contact a { font-size: 14.5px; font-weight: 600; color: var(--text-2); text-decoration: none; white-space: nowrap; }
 .panel__contact a:hover { color: var(--brand-ui); }
 
 .tag {
@@ -271,6 +286,27 @@ svg { display: block; }
 .mbar .btn { width: auto; height: 40px; margin-left: auto; padding: 0 16px; font-size: 15px; }
 
 /* ===== Responsive ===== */
+@media (min-width: 1101px) and (max-height: 760px) {
+  .panel__card { padding: 18px 20px 16px; }
+  .panel__value { font-size: 36px; }
+  .meter { margin-top: 12px; }
+  .meter__labels { margin-top: 4px; }
+  .panel__groups { margin-top: 10px; }
+  .panel__groups li { padding: 7px 0; font-size: 13px; }
+  .panel__actions { margin-top: 12px; gap: 6px; }
+  .panel .btn { height: 40px; font-size: 15px; }
+  .panel__contact { margin-top: 12px; padding-top: 10px; }
+}
+@media (min-width: 1101px) and (max-height: 620px) {
+  .panel__label { font-size: 13px; }
+  .panel__value { font-size: 30px; }
+  .meter__labels { display: none; }
+  .panel__groups li { padding: 5px 0; font-size: 12.5px; }
+  .panel .btn { height: 36px; font-size: 14px; }
+}
+@media (min-width: 1101px) and (max-width: 1280px) {
+  .layout { grid-template-columns: minmax(0, 1fr) 340px; }
+}
 @media (max-width: 1100px) {
   .layout { grid-template-columns: minmax(0, 1fr); }
   .panel { position: static; max-height: none; overflow: visible; }
@@ -286,6 +322,10 @@ svg { display: block; }
   .title { font-size: 25px; }
   .subtitle { font-size: 15px; }
   .info { padding: 18px 16px; margin-top: 22px; }
+  .info--toggle { padding: 0; }
+  .info__toggle { padding: 16px; gap: 12px; }
+  .info__title { font-size: 16px; }
+  .info__body { padding: 0 16px 18px; }
   .block, .groups { margin-top: 28px; }
   .block__title { font-size: 18px; }
   .form { grid-template-columns: minmax(0, 1fr); gap: 14px; }
@@ -295,7 +335,7 @@ svg { display: block; }
   .sg__head { flex-wrap: wrap; }
   .sg__meta { margin-left: 32px; }
   .sg__items { margin-left: 9px; padding-left: 14px; }
-  .panel__card { padding: 24px 20px; border-radius: 22px; }
+  .panel__card { padding: 22px 18px 18px; border-radius: 22px; }
   .panel__value { font-size: 38px; }
   .footer { padding-bottom: 24px; }
 }
@@ -531,67 +571,70 @@ const CONFIG = {
 
 </script>
 <script>
-/* Документы Word в HTML-формате .doc, по образцу исходного калькулятора */
+/* Отчёты строго по шаблону исходного калькулятора (HTML в формате .doc) */
 const Report = (function () {
   'use strict';
 
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const FONT = "font-family:'Times New Roman',serif;";
 
-  const DOC_CSS = [
-    '@page WordSection1 { size: 595.3pt 841.9pt; margin: 2cm 1.5cm 2cm 3cm; }',
-    'div.WordSection1 { page: WordSection1; }',
-    "body { font-family: 'Times New Roman', serif; font-size: 12pt; line-height: 1.5; }",
-    "p, h1, h2, li { font-family: 'Times New Roman', serif; }",
-    'p { margin: 0 0 6pt 0; text-align: justify; }',
-    'h1 { font-size: 12pt; font-weight: bold; text-align: center; margin: 20pt 0; }',
-    'h2 { font-size: 12pt; font-weight: bold; margin: 14pt 0 6pt; }'
-  ].join('\n');
+  /* Шаблон письма KZI_report.doc: исходный файл, поля заменены метками {{...}} */
+  const LETTER_TEMPLATE = "\n            <html>\n            <head>\n                <meta charset=\"UTF-8\">\n                <title>Отчёт о расчёте показателя защищённости</title>\n                <style>\n                    body {\n                        font-family: 'Times New Roman', serif;\n                        margin: 0cm 42.5pt 0cm 0cm;\n                        text-align: justify;\n                        font-size: 12pt;\n                        line-height: 1.5;\n                    }\n                    h1 {\n                        font-size: 12pt;\n                        font-weight: bold;\n                        text-align: center;\n                        margin: 20pt 0;\n                    }\n                    p {\n                        margin: 0 0 6pt 0;\n                        text-align: justify;\n                    }\n                    .signature-block {\n                    }\n                    .bold {\n                        font-weight: bold;\n                    }\n                </style>\n            </head>\n            <body>\n                <p>На бланке организации</p>\n                <p><b>{{ORG}}</b></p>\n                <p>&nbsp;</p>\n                <p style=\"text-align:right\">Руководителю</p>\n                <p style=\"text-align:right\">Управления ФСТЭК России по {{DEPT}}</p>\n                <p style=\"text-align:right\">{{DEPT_HEAD}}</p>\n                <h1>Отчёт о расчёте показателя защищённости (Кзи)</h1>\n                <p>В соответствии с пп. а., п. 31 Требований о защите информации, содержащейся в государственных информационных системах, иных информационных системах государственных органов, государственных унитарных предприятий, государственных учреждений, утвержденных Приказом ФСТЭК России от 11.04.2025 г. № 117 направляем сведения о рассчитанном показателе защищённости.</p>\n                <p><strong>Показатель защищённости Кзи = {{KZI}}</strong></p>\n                <p>Документы и материалы, подтверждающие результаты расчета значений показателя защищенности Кзи в приложении.</p>\n                <div class=\"signature-block\">\n                    <p style=\"margin-top:2cm\">С уважением,</p>\n                    <p><b>{{POST}}</b> __________________ / <strong>{{HEAD}}</strong></p>\n                    <p>&nbsp;</p>\n                    <p>&nbsp;</p>\n                    <p>&nbsp;</p>\n                    <p>&nbsp;</p>\n                    <p>&nbsp;</p>\n                    <p>&nbsp;</p>\n                    <p><b>{{EXECUTOR}}</b></p>\n                    <p><b>{{PHONE}}</b></p>\n                    <p><b>{{EMAIL}}</b></p>\n                </div>\n            </body>\n            </html>\n        ";
 
-  function wordDoc(title, body) {
-    return '﻿<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
-      '<head><meta charset="utf-8"><title>' + esc(title) + '</title>' +
-      '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]-->' +
-      '<style>' + DOC_CSS + '</style></head><body><div class="WordSection1">' + body + '</div></body></html>';
+  function fill(tpl, values) {
+    return tpl.replace(/\{\{([A-Z_]+)\}\}/g, (m, key) => (key in values ? esc(values[key]) : ''));
   }
 
-  const P = (html, style) => '<p style="' + FONT + (style || '') + '">' + html + '</p>';
-  const R = html => P(html, 'text-align:right;margin:0;');
-  const EMPTY = P('&nbsp;');
-
-  /* Письмо во ФСТЭК России (KZI_report.doc) */
   function letterDoc(f, kzi, body) {
-    let h = '';
-    h += P('На бланке организации');
-    h += P('<b>' + esc(f.org) + '</b>');
-    h += EMPTY;
-    h += R('Руководителю');
-    h += R('Управления ФСТЭК России по ' + esc(body.short));
-    if (body.head) h += R(esc(body.head));
-    h += '<h1 style="' + FONT + 'font-size:12pt;font-weight:bold;text-align:center;margin:20pt 0;">Отчёт о расчёте показателя защищённости (Кзи)</h1>';
-    h += P('В соответствии с подпунктом «а» пункта 31 Требований о защите информации, содержащейся в государственных информационных системах, иных информационных системах государственных органов, государственных унитарных предприятий, государственных учреждений, утверждённых приказом ФСТЭК России от 11.04.2025 № 117, направляем сведения о рассчитанном показателе защищённости.', 'text-indent:1.25cm;');
-    h += P('<b>Показатель защищённости Кзи = ' + kzi + '</b>', 'text-indent:1.25cm;');
-    h += P('Документы и материалы, подтверждающие результаты расчёта значения показателя защищённости Кзи, в приложении.', 'text-indent:1.25cm;');
-    h += P('С уважением,', 'margin:36pt 0 6pt 0;text-indent:0;');
-    h += P('<b>' + esc(f.post) + '</b> __________________ / <b>' + esc(f.head) + '</b>', 'text-indent:0;');
-    for (let i = 0; i < 6; i++) h += P('&nbsp;', 'margin:0;line-height:1.15;');
-    const SMALL = 'margin:0;font-size:10pt;line-height:1.15;text-align:left;';
-    h += P(esc(f.executor), SMALL);
-    h += P(esc(f.phone), SMALL);
-    h += P(esc(f.email), SMALL);
-    return wordDoc('Отчёт о расчёте показателя защищённости', h);
+    return fill(LETTER_TEMPLATE, {
+      ORG: f.org, DEPT: body.short, DEPT_HEAD: body.head || '', KZI: kzi,
+      POST: f.post, HEAD: f.head, EXECUTOR: f.executor, PHONE: f.phone, EMAIL: f.email
+    });
   }
 
-  /* Текущий отчёт (Current_KZI_report.doc) */
+  const CURRENT_TEMPLATE = `
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <title>Текущий отчёт по Кзи</title>
+                <style>
+                    body {
+                        font-family: 'Times New Roman', serif;
+                        margin: 0cm 42.5pt 0cm 0cm;
+                        text-align: justify;
+                        font-size: 12pt;
+                        line-height: 1.5;
+                    }
+                    h1 {
+                        font-size: 12pt;
+                        font-weight: bold;
+                        text-align: center;
+                        margin: 20pt 0;
+                    }
+                    p {
+                        margin: 0 0 6pt 0;
+                        text-align: justify;
+                    }
+                    .notes-block {
+                        margin-top: 12pt;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Текущий отчёт о показателе защищённости (Кзи)</h1>
+                <p><strong>Текущее значение Кзи:</strong> {{KZI}}</p>
+                <div class="notes-block">
+                    <h2>Заметки по группам</h2>
+{{NOTES}}
+                </div>
+                <p>Дата формирования: {{DATE}}</p>
+            </body>
+            </html>`;
+
   function currentDoc(kzi, notes, date) {
-    let h = '<h1 style="' + FONT + 'font-size:12pt;font-weight:bold;text-align:center;margin:20pt 0;">Текущий отчёт о показателе защищённости (Кзи)</h1>';
-    h += P('<b>Текущее значение Кзи:</b> ' + kzi);
-    h += '<h2 style="' + FONT + 'font-size:12pt;font-weight:bold;margin:14pt 0 6pt;">Заметки по группам</h2>';
-    if (notes.length) notes.forEach(n => { h += P('<b>' + esc(n.title) + ':</b> ' + esc(n.text).replace(/\n/g, '<br>')); });
-    else h += P('Заметок нет.');
-    h += EMPTY;
-    h += P('Дата формирования: ' + esc(date));
-    return wordDoc('Текущий отчёт по Кзи', h);
+    const notesHtml = notes.length
+      ? notes.map(n => '                    <p><b>' + esc(n.title) + ':</b> ' + esc(n.text).replace(/\n/g, '<br>') + '</p>').join('\n')
+      : '                    <p>Заметок нет.</p>';
+    return CURRENT_TEMPLATE.replace('{{KZI}}', esc(kzi)).replace('{{DATE}}', esc(date)).replace('{{NOTES}}', notesHtml);
   }
 
   function download(filename, html) {
@@ -655,11 +698,11 @@ const Report = (function () {
 
   /* ---------- state ---------- */
   function defaultState() {
-    const items = {}, notes = {}, open = {}, form = { region: 'ufo' };
+    const items = {}, notes = {}, open = {}, form = { region: 'ufo' }, info = { about: true, useful: true };
     INDS.forEach(ind => { items[ind.id] = ind.items.map(() => false); });
     METHOD.groups.forEach(g => { notes[g.id] = ''; open[g.id] = true; });
     FIELDS.forEach(f => { form[f.key] = ''; });
-    return { v: 2, items, notes, open, form };
+    return { v: 2, items, notes, open, form, info };
   }
 
   function normalize(s) {
@@ -675,6 +718,7 @@ const Report = (function () {
     });
     FIELDS.forEach(f => { if (s.form && typeof s.form[f.key] === 'string') d.form[f.key] = s.form[f.key].slice(0, 300); });
     if (s.form && FSTEC_BODIES.some(b => b.id === s.form.region)) d.form.region = s.form.region;
+    if (s.info) ['about', 'useful'].forEach(k => { if (typeof s.info[k] === 'boolean') d.info[k] = s.info[k]; });
     return d;
   }
 
@@ -687,12 +731,17 @@ const Report = (function () {
   })();
 
   let saveTimer = 0;
+  function persist() {
+    clearTimeout(saveTimer);
+    saveTimer = 0;
+    try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(state)); } catch (e) { /* нет доступа к хранилищу */ }
+  }
   function save() {
     clearTimeout(saveTimer);
-    saveTimer = setTimeout(() => {
-      try { localStorage.setItem(CONFIG.storageKey, JSON.stringify(state)); } catch (e) { /* нет доступа к хранилищу */ }
-    }, 120);
+    saveTimer = setTimeout(persist, 120);
   }
+  window.addEventListener('pagehide', () => { if (saveTimer) persist(); });
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden' && saveTimer) persist(); });
 
   /* Кзи = Σ (Σ kji) · Rj, показатель засчитывается при выполнении всех его критериев */
   function calc() {
@@ -721,6 +770,17 @@ const Report = (function () {
       '<label class="field__label" for="f-' + f.key + '">' + f.label + '</label>' +
       '<input class="input" id="f-' + f.key + '" data-form="' + f.key + '" type="' + (f.type || 'text') + '" placeholder="' + esc(f.ph) + '" value="' + esc(state.form[f.key]) + '" autocomplete="off">' +
     '</div>';
+  }
+
+  function infoHtml(key, title, body) {
+    const open = !!state.info[key];
+    return '<section class="info info--toggle' + (open ? ' is-open' : '') + '" data-info="' + key + '">' +
+      '<button type="button" class="info__toggle" data-action="info" data-key="' + key + '" aria-expanded="' + open + '" aria-controls="info-' + key + '">' +
+        '<span class="expander" aria-hidden="true"></span><span class="info__title">' + title + '</span>' +
+        '<span class="info__hint" data-show="Показать" data-hide="Скрыть">' + (open ? 'Скрыть' : 'Показать') + '</span>' +
+      '</button>' +
+      '<div class="info__body" id="info-' + key + '">' + body + '</div>' +
+    '</section>';
   }
 
   function regionHtml() {
@@ -768,7 +828,7 @@ const Report = (function () {
         '<main class="main">' +
           '<h1 class="title">Калькулятор показателя защищённости</h1>' +
           '<p class="subtitle">Расчёт Кзи по методике ФСТЭК России согласно требованиям приказа ФСТЭК России № 117</p>' +
-          '<section class="info" aria-label="Справка">' +
+          infoHtml('about', 'Информация о калькуляторе',
             '<div class="info__item"><h2>Кому необходимо рассчитывать Кзи?</h2>' +
               '<p>Оценку показателя защищённости должны проводить операторы ГИС, ИСПДн и иных ИС, являющиеся государственными и муниципальными организациями, а также субъекты КИИ.</p></div>' +
             '<div class="info__item"><h2>Зачем рассчитывать Кзи?</h2>' +
@@ -778,23 +838,21 @@ const Report = (function () {
               '<li>Отметьте выполненные требования по критериям в четырёх группах. Требование засчитывается, когда отмечены все его критерии.</li>' +
               '<li>Калькулятор автоматически рассчитает значение показателя защищённости.</li>' +
               '<li>Сформируйте отчёт с вашими данными и рассчитанным Кзи для направления во ФСТЭК России.</li>' +
-            '</ol></div>' +
-          '</section>' +
+            '</ol></div>') +
           '<section class="block"><h2 class="block__title">Для формирования отчёта о рассчитанном показателе заполните необходимые поля</h2>' +
             '<div class="form">' + FIELDS.map(fieldHtml).join('') + regionHtml() + '</div></section>' +
           '<div class="groups">' + METHOD.groups.map(groupHtml).join('') + '</div>' +
-          '<section class="info" aria-label="Полезная информация"><div class="info__item"><h2>Полезная информация</h2><ul>' +
+          infoHtml('useful', 'Полезная информация', '<ul>' +
             '<li>Если по результатам расчёта значение Кзи характеризует текущее состояние защищённости как низкое («оранжевый») или критическое («красный»), разрабатывается план мероприятий по достижению следующего уровня защиты от актуальных угроз.</li>' +
             '<li>Срок реализации мероприятий из плана не должен превышать срок до следующей плановой оценки показателя Кзи.</li>' +
             '<li>Согласно требованиям приказа ФСТЭК России расчёт показателя Кзи должен проводиться не реже одного раза в 6 месяцев.</li>' +
             '<li>Результаты оценки Кзи оператор (обладатель информации) должен направить во ФСТЭК России не позднее 5 рабочих дней после дня расчёта для мониторинга текущего состояния технической защиты информации и оценки эффективности деятельности по технической защите информации.</li>' +
-          '</ul></div></section>' +
+          '</ul>') +
         '</main>' +
         '<aside class="panel" id="panel" aria-label="Результат расчёта">' +
           '<div class="panel__card">' +
             '<div class="panel__label">Текущее состояние защиты информации</div>' +
-            '<div class="panel__value" id="kzi">0,00</div>' +
-            '<div class="panel__status" id="status"></div>' +
+            '<div class="panel__result"><div class="panel__value" id="kzi">0,00</div><div class="panel__status" id="status"></div></div>' +
             '<div class="meter" aria-hidden="true"><div class="meter__track"><div class="meter__fill" id="fill"></div><span class="meter__tick"></span></div>' +
               '<div class="meter__labels"><span>0</span><span>0,75</span><span>1</span></div></div>' +
             '<ul class="panel__groups" id="pgroups">' +
@@ -806,10 +864,10 @@ const Report = (function () {
               '<button type="button" class="btn btn--dark" data-action="letter">Сформировать отчёт</button>' +
             '</div>' +
             '<p class="panel__msg" id="msg" role="status" aria-live="polite" hidden></p>' +
+            '<div class="panel__contact"><div>Получить консультацию по экспресс-повышению уровня защищённости:</div>' +
+              '<div class="panel__links"><a href="tel:' + CONFIG.contactPhoneHref + '">' + esc(CONFIG.contactPhone) + '</a>' +
+              '<a href="mailto:' + CONFIG.contactEmail + '">' + esc(CONFIG.contactEmail) + '</a></div></div>' +
           '</div>' +
-          '<div class="panel__contact">Получить консультацию по экспресс-повышению уровня защищённости:' +
-            '<a href="tel:' + CONFIG.contactPhoneHref + '">' + esc(CONFIG.contactPhone) + '</a>' +
-            '<a href="mailto:' + CONFIG.contactEmail + '">' + esc(CONFIG.contactEmail) + '</a></div>' +
         '</aside>' +
       '</div>' +
       '<footer class="footer">Разработано <a href="' + CONFIG.site + '" target="_blank" rel="noopener">УЦСБ</a> · ' + new Date().getFullYear() + '</footer>' +
@@ -893,7 +951,7 @@ const Report = (function () {
     if (!validate()) return;
     const c = calc();
     const body = FSTEC_BODIES.find(b => b.id === state.form.region) || FSTEC_BODIES[0];
-    Report.download('KZI_report.doc', Report.letterDoc(state.form, fmt(c.kzi), body));
+    Report.download('KZI_report.doc', Report.letterDoc(state.form, fmt(c.kzi).replace(',', '.'), body));
     message('Отчёт сформирован и скачан.', 'ok');
   }
 
@@ -902,7 +960,7 @@ const Report = (function () {
     const notes = METHOD.groups
       .filter(g => String(state.notes[g.id] || '').trim())
       .map(g => ({ title: 'Группа ' + g.id + '. ' + (g.fullTitle || g.title), text: state.notes[g.id].trim() }));
-    Report.download('Current_KZI_report.doc', Report.currentDoc(fmt(c.kzi), notes, today()));
+    Report.download('Current_KZI_report.doc', Report.currentDoc(fmt(c.kzi).replace(',', '.'), notes, today()));
     message('Текущий отчёт скачан.', 'ok');
   }
 
@@ -928,6 +986,17 @@ const Report = (function () {
         state.open[id] = !state.open[id];
         a.closest('.group').classList.toggle('is-open', state.open[id]);
         a.setAttribute('aria-expanded', String(state.open[id]));
+        save();
+        break;
+      }
+      case 'info': {
+        const key = a.dataset.key;
+        state.info[key] = !state.info[key];
+        const sec = a.closest('.info');
+        sec.classList.toggle('is-open', state.info[key]);
+        a.setAttribute('aria-expanded', String(state.info[key]));
+        const hint = $('.info__hint', a);
+        hint.textContent = state.info[key] ? hint.dataset.hide : hint.dataset.show;
         save();
         break;
       }
