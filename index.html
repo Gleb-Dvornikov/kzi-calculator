@@ -263,6 +263,11 @@ svg { display: block; }
 .panel__links { display: flex; flex-wrap: wrap; gap: 2px 18px; margin-top: 6px; }
 .panel__contact a { font-size: 14.5px; font-weight: 600; color: var(--text-2); text-decoration: none; white-space: nowrap; }
 .panel__contact a:hover { color: var(--brand-ui); }
+.panel__cta { margin: 0; }
+.panel__contact a.panel__lead { display: inline-block; margin-top: 6px; font-size: 13.5px; font-weight: 600; color: var(--brand-ui); white-space: normal; }
+.panel__contact a.panel__lead::after { content: ' →'; }
+.panel__contact a.panel__lead:hover { color: var(--brand); text-decoration: underline; }
+.panel__lead + .panel__links { margin-top: 4px; }
 
 .tag {
   display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 6px;
@@ -920,7 +925,7 @@ const FSTEC_BODIES = [
 const CONFIG = {
   brand: 'УЦСБ',
   brandFull: 'Уральский центр систем безопасности',
-  contactEmail: 'info@ussc.ru',
+  contactEmail: 'cybersec@ussc.ru',
   contactPhone: '+7 (343) 379-98-34',
   contactPhoneHref: '+73433799834',
   site: 'https://sec.ussc.ru/',
@@ -1003,6 +1008,9 @@ const Report = (function () {
       cols.map(c => '<th width="' + c[1] + '%"' + (c[2] ? ' class="c"' : '') + '>' + c[0] + '</th>').join('') + '</tr>' + rows.join('') + '</table>';
   }
 
+  /* контакты УЦСБ только в текущих (рабочих) отчётах, в письмо во ФСТЭК и отчёт для Заказчика не попадают */
+  const helpLine = () => '<p class="small">Консультации по повышению уровня: УЦСБ, ' + esc(CONFIG.contactEmail) + ', ' + esc(CONFIG.contactPhone) + '.</p>';
+
   /* ===== Текущий отчёт по КЗИ ===== */
   const SEND = {
     with: 'Направляются с результатами оценки',
@@ -1054,7 +1062,7 @@ const Report = (function () {
       : '<p>Выполненных показателей нет, документы для направления не требуются.</p>';
     body += '<h2>Заметки по группам</h2>' +
       (notes.length ? notes.map(n => '<p><b>' + esc(n.title) + ':</b> ' + br(n.text) + '</p>').join('') : '<p>Заметок нет.</p>') +
-      '<p>Дата формирования: ' + esc(date) + '</p>';
+      '<p>Дата формирования: ' + esc(date) + '</p>' + helpLine();
     return page('Текущий отчёт по КЗИ', body);
   }
 
@@ -1086,7 +1094,7 @@ const Report = (function () {
     body += '<p>Оценка проведена по Методике оценки уровня зрелости деятельности в области технической защиты информации в информационных системах и обеспечения безопасности значимых объектов критической информационной инфраструктуры Российской Федерации, утверждённой ФСТЭК России 7 августа 2026 г. (далее - Методика).' +
       (full ? ' Состав отчёта соответствует пункту 35 Методики.' : '') + '</p>' +
       '<p><strong>Уровень зрелости УЗИ = ' + value + '</strong>' + (c.level ? ', ' + esc(c.level.name.toLowerCase()) + '. ' + esc(c.level.text) + '.' : '') + '</p>' +
-      '<p>Целевой уровень зрелости направлений: не ниже ' + T + '. Достигнут по ' + c.reached + ' из ' + c.N + ' оцениваемых направлений.</p>';
+      '<p>Целевой уровень зрелости направлений: не ниже ' + T + '. Достигнут по ' + c.reached + ' из ' + c.N + (c.N % 10 === 1 && c.N % 100 !== 11 ? ' оцениваемого направления' : ' оцениваемых направлений') + '.</p>';
 
     if (full) {
       body += h('Сведения об организации') +
@@ -1164,7 +1172,7 @@ const Report = (function () {
         '<p>' + esc(f.executorPost) + ' __________________ ' + esc(f.executor) + '</p>' +
         '<p>&nbsp;</p><p>Дата составления отчёта: ' + esc(date) + '</p>';
     } else {
-      body += '<p>Дата формирования: ' + esc(date) + '</p>';
+      body += '<p>Дата формирования: ' + esc(date) + '</p>' + helpLine();
     }
     return page(full ? 'Отчёт об оценке уровня зрелости' : 'Текущий отчёт по УЗИ', body);
   }
@@ -1672,7 +1680,8 @@ const Report = (function () {
               '<button type="button" class="btn btn--dark" data-action="letter">Сформировать отчёт</button>' +
             '</div>' +
             '<p class="panel__msg" id="msg" role="status" aria-live="polite" hidden></p>' +
-            '<div class="panel__contact"><div>Получить консультацию по экспресс-повышению уровня защищённости:</div>' +
+            '<div class="panel__contact"><p class="panel__cta" id="cta"></p>' +
+              '<a class="panel__lead" id="lead" href="mailto:' + CONFIG.contactEmail + '" data-action="lead" hidden></a>' +
               '<div class="panel__links"><a href="tel:' + CONFIG.contactPhoneHref + '">' + esc(CONFIG.contactPhone) + '</a>' +
               '<a href="mailto:' + CONFIG.contactEmail + '">' + esc(CONFIG.contactEmail) + '</a></div></div>' +
           '</div>' +
@@ -1789,7 +1798,75 @@ const Report = (function () {
     return c;
   }
 
-  function update() { return state.mode === 'kzi' ? kziUpdate() : uziUpdate(); }
+  /* ---------- предложение помощи УЦСБ: текст зависит от результата, письмо собирается при нажатии ---------- */
+  let leadBuilder = null;
+  const clean = v => String(v == null ? '' : v).trim();
+  /* «из 21 направления», «из 19 направлений» */
+  const ofDirs = n => n + ' ' + (n % 10 === 1 && n % 100 !== 11 ? 'направления' : 'направлений');
+  function mailto(subject, lines) {
+    return 'mailto:' + CONFIG.contactEmail + '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(lines.filter(Boolean).join('\r\n'));
+  }
+  function contactLine() {
+    const parts = [state.form.executor, state.form.phone, state.form.email].map(clean).filter(Boolean);
+    return parts.length ? 'Контакт: ' + parts.join(', ') : '';
+  }
+  function subjectFor(name) {
+    const org = clean(state.form.org);
+    return 'Калькулятор ' + name + (org ? ': ' + org : '');
+  }
+  function setCta(text, leadText, builder) {
+    $('#cta').textContent = text;
+    const lead = $('#lead');
+    lead.hidden = !leadText;
+    lead.textContent = leadText || '';
+    leadBuilder = builder || null;
+  }
+
+  function kziCta(c) {
+    if (c.kzi <= 0) return setCta('Получить консультацию по экспресс-повышению уровня защищённости:');
+    const head = 'КЗИ ' + fmt(c.kzi) + ' (' + c.level.name.toLowerCase() + ')';
+    if (c.kzi >= 10000) {
+      return setCta('Нормированное значение достигнуто. Поможем подготовить подтверждающие документы по приложению № 1 к Методике.', 'Написать в УЦСБ',
+        () => mailto(subjectFor('КЗИ'), ['Добрый день.', 'Прошу проконсультировать по подготовке подтверждающих документов.', head + '.', contactLine()]));
+    }
+    const unmet = [];
+    c.groups.forEach(gr => gr.inds.forEach(x => { if (!x.ok) unmet.push(x.ind.code); }));
+    const zeroed = c.groups.filter(gr => gr.zeroed).map(gr => 'R' + gr.g.id);
+    const text = unmet.length
+      ? 'Не выполнено показателей: ' + unmet.length + ' из ' + KZI_INDS.length + '. Поможем выполнить меры до следующей оценки.'
+      : 'Обнулены весовые коэффициенты: ' + zeroed.join(', ') + '. Поможем устранить причины до следующей оценки.';
+    const detail = unmet.length ? ', не выполнены показатели: ' + unmet.join(', ') : ', обнулены весовые коэффициенты: ' + zeroed.join(', ');
+    setCta(text, 'Получить план повышения',
+      () => mailto(subjectFor('КЗИ'), ['Добрый день.', 'Прошу подготовить план повышения показателя защищённости.', head + detail + '.', contactLine()]));
+  }
+
+  function uziCta(c) {
+    const generic = 'Получить консультацию по экспресс-повышению уровня зрелости:';
+    const assessed = c.dirs.filter(r => !r.na && r.answered > 0);
+    if (!assessed.length) return setCta(generic);
+    const head = 'УЗИ ' + fmtFrac(c.value, 2, 2) + ', уровень «' + c.level.name.toLowerCase() + '», целевой уровень не ниже ' + c.target;
+    const weak = assessed.filter(r => r.level < c.target);
+    if (weak.length) {
+      const counts = {};
+      weak.forEach(r => r.gaps.forEach(g => { counts[g.j] = (counts[g.j] || 0) + 1; }));
+      const top = Object.keys(counts).map(Number).sort((a, b) => counts[b] - counts[a] || a - b).slice(0, 2)
+        .map(j => UZI_TYPES[j - 1].name.toLowerCase());
+      return setCta('Основные недостатки: ' + top.join(' и ') + '. Поможем закрыть их до проверки Заказчиком.', 'Получить план повышения',
+        () => mailto(subjectFor('УЗИ'), ['Добрый день.', 'Прошу подготовить план повышения уровня зрелости.',
+          head + ', ниже цели ' + c.below + ' из ' + ofDirs(c.N) + '.', 'Основные недостатки по видам требований: ' + top.join(', ') + '.', contactLine()]));
+    }
+    if (assessed.length < c.N) return setCta(generic);
+    setCta('Целевой уровень достигнут по всем направлениям. Подтвердить его можно внешней оценкой (п. 6 Методики).', 'Запросить внешнюю оценку',
+      () => mailto(subjectFor('УЗИ'), ['Добрый день.', 'Прошу рассмотреть внешнюю оценку уровня зрелости.', head + ', достигнут по всем направлениям.', contactLine()]));
+  }
+
+  function update() {
+    if (state.mode === 'kzi') { const c = kziUpdate(); kziCta(c); return c; }
+    const c = uziUpdate();
+    uziCta(c);
+    return c;
+  }
 
   /* ---------- сообщения ---------- */
   let msgTimer = 0;
@@ -1965,6 +2042,9 @@ const Report = (function () {
         save();
         break;
       }
+      case 'lead':
+        if (leadBuilder) a.href = leadBuilder();
+        break;
       case 'reset': reset(); break;
       case 'current': makeCurrent(); break;
       case 'letter': makeLetter(); break;
