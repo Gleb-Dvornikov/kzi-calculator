@@ -1,0 +1,36 @@
+/*
+ * Корпоративный шрифт Montserrat 7.200 (SIL Open Font License 1.1, текст лицензии в src/assets/fonts/OFL.txt).
+ * Файлы подключаются с сайта калькулятора, сторонние сервисы шрифтов не используются.
+ * Подмножество: латиница, кириллица, типографские знаки, № и ₽.
+ */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/montserrat-400.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../assets/fonts/montserrat-500.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/montserrat-600.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/montserrat-700.woff') format('woff');
+}
