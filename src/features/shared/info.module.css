@@ -1,0 +1,32 @@
+/* Перечень уровней с цветными метками в справочных блоках */
+.levels {
+  list-style: none;
+  padding-left: 0 !important;
+}
+
+.levels li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.levels li + li {
+  margin-top: 10px;
+}
+
+.levels li > span:first-child {
+  flex: none;
+  min-width: 150px;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .levels li {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .levels li > span:first-child {
+    min-width: 0;
+  }
+}

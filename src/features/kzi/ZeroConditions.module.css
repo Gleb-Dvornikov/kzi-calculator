@@ -1,0 +1,35 @@
+.lead {
+  margin: 0 0 8px;
+  font-size: 14.5px;
+  color: var(--text-2);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.list label > span:last-child {
+  font-size: 14.5px;
+}
+
+.effect {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 0 7px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--muted-3);
+  white-space: nowrap;
+  vertical-align: 1px;
+}
+
+.on {
+  border-color: var(--red-bd);
+  background: var(--red-bg);
+  color: var(--red);
+}

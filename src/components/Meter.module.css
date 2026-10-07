@@ -1,0 +1,91 @@
+.meter {
+  margin-top: 16px;
+}
+
+.track {
+  position: relative;
+  height: 10px;
+  border-radius: 99px;
+  background: var(--row);
+}
+
+.fill {
+  height: 100%;
+  width: 0;
+  border-radius: 99px;
+  transition:
+    width 0.35s ease,
+    background-color 0.35s ease;
+}
+
+.red {
+  background: var(--zone-red);
+}
+
+.orange {
+  background: var(--zone-orange);
+}
+
+.gold {
+  background: var(--zone-gold);
+}
+
+.green {
+  background: var(--zone-green);
+}
+
+.teal {
+  background: var(--zone-teal);
+}
+
+.tick {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 2px;
+  background: #c4c4c4;
+}
+
+.labels {
+  position: relative;
+  height: 18px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted-2);
+}
+
+.labels span {
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+}
+
+.labels .mid {
+  transform: translateX(-50%);
+}
+
+.labels .end {
+  right: 0;
+}
+
+@media (min-width: 1101px) and (max-height: 760px) {
+  .meter {
+    margin-top: 12px;
+  }
+
+  .labels {
+    margin-top: 4px;
+  }
+}
+
+@media (min-width: 1101px) and (max-height: 700px) {
+  .meter {
+    margin-top: 10px;
+  }
+
+  .labels {
+    display: none;
+  }
+}

@@ -1,0 +1,108 @@
+.section {
+  margin-top: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-block);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 18px 24px;
+  border: 0;
+  background: none;
+  text-align: left;
+}
+
+.title {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 17px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.hint {
+  flex: none;
+  font-size: 14px;
+  color: var(--muted-2);
+}
+
+.toggle:hover .hint {
+  color: var(--brand-ui);
+}
+
+.body {
+  padding: 0 28px 24px 58px;
+}
+
+/* Оформление текста внутри справочных блоков */
+.body h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.body h4 {
+  margin: 20px 0 10px;
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.body p {
+  margin: 0 0 6px;
+  font-size: 15px;
+  color: var(--text-3);
+}
+
+.body p:last-child {
+  margin-bottom: 0;
+}
+
+.body ol,
+.body ul {
+  margin: 0;
+  padding-left: 22px;
+  font-size: 15px;
+  color: var(--text-3);
+}
+
+.body li + li {
+  margin-top: 6px;
+}
+
+.body ul ul {
+  margin-top: 6px;
+}
+
+.body a {
+  color: var(--brand-ui);
+}
+
+.body > * + * {
+  margin-top: 18px;
+}
+
+@media (max-width: 760px) {
+  .section {
+    margin-top: 20px;
+  }
+
+  .toggle {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .title {
+    font-size: 16px;
+  }
+
+  .body {
+    padding: 0 16px 18px;
+  }
+}

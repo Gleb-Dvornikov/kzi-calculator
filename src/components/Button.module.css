@@ -1,0 +1,86 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  transition:
+    background 0.15s,
+    border-color 0.15s,
+    color 0.15s,
+    opacity 0.15s;
+}
+
+.button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.button svg {
+  flex: none;
+}
+
+.md {
+  height: 46px;
+  padding: 0 18px;
+  font-size: 16px;
+}
+
+.sm {
+  height: 38px;
+  padding: 0 14px;
+  font-size: 14.5px;
+}
+
+.block {
+  width: 100%;
+}
+
+.dark {
+  background: var(--dark);
+  color: #fff;
+}
+
+.dark:not(:disabled):hover {
+  background: var(--dark-hover);
+}
+
+.outline {
+  background: var(--card);
+  border-color: var(--border-2);
+  color: var(--text-2);
+}
+
+.outline:not(:disabled):hover {
+  border-color: var(--brand-ui);
+  color: var(--brand-ui);
+}
+
+.light {
+  background: var(--thead);
+  color: var(--text-2);
+}
+
+.light:not(:disabled):hover {
+  background: #eaeaea;
+}
+
+.link {
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brand-ui);
+  font-weight: 600;
+  white-space: normal;
+  text-align: left;
+}
+
+.link:not(:disabled):hover {
+  color: var(--brand);
+  text-decoration: underline;
+}

@@ -1,0 +1,87 @@
+.check {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.box {
+  position: relative;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border-2);
+  border-radius: 5px;
+  background: var(--card);
+  color: #fff;
+  transition:
+    background 0.12s,
+    border-color 0.12s;
+}
+
+.box svg {
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.12s,
+    transform 0.12s;
+}
+
+.check:hover .box {
+  border-color: var(--brand-ui);
+}
+
+.input:checked + .box {
+  background: var(--brand-ui);
+  border-color: var(--brand-ui);
+}
+
+.input:checked + .box svg {
+  opacity: 1;
+  transform: none;
+}
+
+.input:focus-visible + .box {
+  outline: 2px solid var(--brand-ui);
+  outline-offset: 2px;
+}
+
+.text {
+  min-width: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text-3);
+  overflow-wrap: anywhere;
+}
+
+.disabled,
+.disabled .input {
+  cursor: default;
+}
+
+.disabled .text {
+  opacity: 0.55;
+}
+
+.disabled:hover .box {
+  border-color: var(--border-2);
+}
+
+.disabled .input:checked + .box {
+  opacity: 0.6;
+}

@@ -1,0 +1,36 @@
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+.block {
+  margin-top: 28px;
+}
+
+.blockTitle {
+  margin: 0 0 14px;
+  font-size: 20px;
+  line-height: 1.3;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.legend {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--muted-2);
+}
+
+@media (max-width: 760px) {
+  .groups,
+  .block {
+    margin-top: 22px;
+  }
+
+  .blockTitle {
+    font-size: 18px;
+  }
+}

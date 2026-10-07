@@ -1,0 +1,156 @@
+.question {
+  padding: 14px 0;
+  border-top: 1px solid var(--row);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 12px;
+}
+
+.name {
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.weight {
+  font-size: 13px;
+  color: var(--muted-2);
+  white-space: nowrap;
+}
+
+.degree {
+  margin-left: auto;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--muted-3);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.characteristic {
+  margin: 2px 0 8px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.option {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    border-color 0.12s,
+    background 0.12s;
+}
+
+.option:hover {
+  border-color: var(--brand-ui);
+}
+
+.option input {
+  position: absolute;
+  left: 14px;
+  top: 9px;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.dot {
+  position: relative;
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  border: 1px solid var(--border-2);
+  border-radius: 50%;
+  background: var(--card);
+  transition: border-color 0.12s;
+}
+
+.dot::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--brand-ui);
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.12s;
+}
+
+.option input:checked ~ .dot {
+  border-color: var(--brand-ui);
+}
+
+.option input:checked ~ .dot::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.option input:focus-visible ~ .dot {
+  outline: 2px solid var(--brand-ui);
+  outline-offset: 2px;
+}
+
+.checked {
+  border-color: var(--brand-ui);
+  background: var(--brand-soft);
+}
+
+.text {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--text-3);
+  overflow-wrap: anywhere;
+}
+
+.value {
+  flex: none;
+  min-width: 26px;
+  text-align: right;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.6;
+  color: var(--muted-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.checked .value {
+  color: var(--brand-ui);
+}
+
+@media (max-width: 760px) {
+  .option {
+    padding: 9px 12px;
+    gap: 10px;
+  }
+
+  .option input {
+    left: 12px;
+  }
+
+  .characteristic {
+    font-size: 13px;
+  }
+}

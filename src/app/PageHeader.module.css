@@ -1,0 +1,58 @@
+.header {
+  min-width: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: 32px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+}
+
+.subtitle {
+  margin: 10px 0 0;
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.period {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--thead);
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--text-3);
+}
+
+.icon {
+  flex: none;
+  margin-top: 1px;
+  color: var(--brand-ui);
+}
+
+.reminder {
+  display: inline;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+@media (max-width: 760px) {
+  .title {
+    font-size: 25px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+
+  .period {
+    font-size: 14px;
+  }
+}

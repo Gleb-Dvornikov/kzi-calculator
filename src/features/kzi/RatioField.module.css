@@ -1,0 +1,142 @@
+.ratio {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 7px 0;
+}
+
+/* Не флажок: квадрат показывает результат расчета по введенным числам */
+.box {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border: 1px dashed var(--border-2);
+  border-radius: 5px;
+  background: var(--card);
+  color: #fff;
+}
+
+.box svg {
+  opacity: 0;
+}
+
+.boxMet {
+  border-style: solid;
+  border-color: var(--brand-ui);
+  background: var(--brand-ui);
+}
+
+.boxMet svg {
+  opacity: 1;
+}
+
+.body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--text-3);
+  overflow-wrap: anywhere;
+}
+
+.inputs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  margin-top: 8px;
+}
+
+.count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 13.5px;
+  line-height: 1.3;
+  color: var(--muted);
+}
+
+.count span {
+  min-width: 0;
+}
+
+.input {
+  flex: none;
+  width: 92px;
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-control);
+  background: var(--card);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  outline: 0;
+}
+
+.input:focus {
+  border-color: var(--brand-ui);
+  box-shadow: var(--focus-ring);
+}
+
+.input::placeholder {
+  color: #c4c4c4;
+}
+
+.result {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: 13.5px;
+  color: var(--muted-2);
+}
+
+.result b {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.threshold {
+  white-space: nowrap;
+}
+
+.problem {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--red);
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+@media (max-width: 760px) {
+  .inputs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* На узком экране подпись над полем, чтобы длинные слова не обрезались */
+  .count {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .count span {
+    order: -1;
+  }
+}

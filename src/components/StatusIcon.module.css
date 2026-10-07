@@ -1,0 +1,36 @@
+.icon {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+  border-radius: 50%;
+  border: 2px solid var(--border-2);
+  background: var(--card);
+  color: #fff;
+}
+
+.met {
+  border-color: var(--zone-green);
+  background: var(--zone-green);
+}
+
+/* Половина круга: часть критериев выполнена */
+.partial {
+  border-color: var(--brand-ui);
+  background: linear-gradient(90deg, var(--brand-ui) 50%, var(--card) 50%);
+}
+
+.notApplicable {
+  border-color: var(--muted-3);
+}
+
+.notApplicable::after {
+  content: '';
+  width: 10px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--muted-3);
+}
