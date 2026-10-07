@@ -1,0 +1,12 @@
+# Собранный сайт для GitHub Pages (создается командой npm run build:pages)
+/index.html
+/assets
+/favicon.svg
+/.nojekyll
+
+node_modules
+dist
+dev
+test-results
+playwright-report
+package-lock.json
